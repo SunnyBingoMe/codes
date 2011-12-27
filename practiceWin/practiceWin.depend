@@ -1,0 +1,74 @@
+# depslib dependency file v1.0
+1296816642 source:m:\codes\practicewin\main.cpp
+	<iostream>
+	<string.h>
+
+1296820314 source:m:\codes\practicewin\ex425.cpp
+	<iostream>
+	"string1.hpp"
+
+1296820093 m:\codes\practicewin\string1.hpp
+	<string.h>
+
+1298213204 source:m:\codes\practicewin\string.cpp
+	<iostream>
+
+1298214032 source:m:\codes\practicewin\ex8.4.cpp
+	<iostream>
+
+1299343947 source:m:\codes\practicewin\ex_of9.1.1.cpp
+	<iostream>
+
+1299522295 source:m:\codes\practicewin\ex9.4.cpp
+	<iostream>
+
+1299522035 source:m:\codes\practicewin\ex9.4.c
+	<iostream>
+
+1299527823 source:m:\codes\practicewin\ex9.5.cpp
+	<iostream>
+	<string>
+
+1299529884 source:m:\codes\practicewin\ex9.6.cpp
+	<iostream>
+
+1299601595 source:m:\codes\practicewin\ex9.7.cpp
+	<stdio.h>
+	<iostream>
+
+1299615294 source:m:\codes\practicewin\ex9.8.cpp
+	<iostream>
+
+1299626969 source:m:\codes\practicewin\ex9.11.cpp
+	<iostream>
+
+1299708725 source:m:\codes\practicewin\ex9.13.cpp
+	<iostream>
+
+1299938962 source:m:\codes\practicewin\ex9.14.cpp
+	<iostream>
+
+1299974666 source:m:\codes\practicewin\ex11.3.cpp
+	<iostream>
+
+1300016340 source:m:\codes\practicewin\ex11.5.cpp
+	<iostream>
+
+1300017782 source:m:\codes\practicewin\ex11.6.cpp
+	<iostream>
+
+1300041513 source:m:\codes\practicewin\ex11.8.cpp
+	<iostream>
+
+1300437821 source:m:\codes\practicewin\ex11.7.cpp
+	<iostream>
+
+1300440285 source:m:\codes\practicewin\ex11.9.cpp
+	<iostream>
+
+1300442463 source:m:\codes\practicewin\ex11.10.cpp
+	<iostream>
+
+1300821347 source:m:\codes\practicewin\ex12.1.cpp
+	<iostream>
+

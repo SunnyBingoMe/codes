@@ -1,0 +1,17 @@
+﻿Build started 12/29/2010 10:31:56 AM.
+     1>Project "L:\codes\testE\testE\testE.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\testE.unsuccessfulbuild".
+       ClCompile:
+         D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\main.cpp
+         main.cpp
+     1>l:\codes\teste\main.cpp(24): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\program files\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>l:\codes\teste\main.cpp(31): error C2664: 'Person::Person(const Person &)' : cannot convert parameter 1 from 'const char [6]' to 'const Person &'
+                 Reason: cannot convert from 'const char [6]' to 'const Person'
+                 No constructor could take the source type, or constructor overload resolution was ambiguous
+     1>Done Building Project "L:\codes\testE\testE\testE.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.42

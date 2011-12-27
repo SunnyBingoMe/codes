@@ -1,0 +1,67 @@
+i am using zf.zip instead of zend-server
+
+// ln /etc/php5/zendFramework_1.11.10/bin/zf.sh /usr/bin/zf               //some problems, so:
+
+ps: if apt-get install zend-framework-bin (1.10) , then default lib will be /usr/share/php/libzend-framework-php
+( ref: /usr/share/zend-framework  /usr/share/doc/libzend-framework-php) 
+Q: how could the apt-get...bin setup the lib path? (not php.ini , so it's ENV variables?) 
+
+
+apt-get install phpunit;
+
+modify /etc/php5/cli/php.ini :
+include_path = ".:/etc/php5/zendFramework_1.11.10/library:/usr/share/php:/usr/share/php/PHPUnit"
+
+zf create project projectName
+
+The following is a sample VHOST you might want to consider for your project.
+
+	<VirtualHost *:80>
+		ServerName quickstart.local
+		DocumentRoot /mnt/hgfs/now/Dropbox/codes/zend_framework/quickstart/public
+	 
+		SetEnv APPLICATION_ENV "development"
+	 
+		<Directory /mnt/hgfs/now/Dropbox/codes/zend_framework/quickstart/public>
+			DirectoryIndex index.php
+			AllowOverride All
+			Order allow,deny
+			Allow from all
+		</Directory>
+	</VirtualHost>
+
+
+default configuration is placed in application/configs/application.ini
+
+zf enable layout
+
+3 sentences about : zf configure db-adapter blala....
+
+apt-get install php5-sqlite
+
+Create the script as scripts/load.sqlite.php
+! flesh out: scripts/load.sqlite.php
+php scripts/load.sqlite.php --withdata
+
+zf create db-table Guestbook guestbook
+zf create model GuestbookMapper
+! flesh out: models/GuestbookMapper.php 
+
+Now it's time to create our model class. 
+zf create model Guestbook
+! flesh out: models/Guestbook.php class: Application_Model_GuestbookMapper 
+
+Lastly, to connect these elements all together, lets create a guestbook controller 
+zf create controller Guestbook
+(this will create view, too.)
+! flesh out: controllers/GuestbookController.php
+! flesh out: views/scripts/guestbook/index.phtml
+
+
+
+zf create form Guestbook
+! flesh out: application/forms/Guestbook.php
+
+zf create action sign Guestbook              //format : zf create action actionName ControllerName
+this will create a signAction() method in our controller, as well as the appropriate view script.
+! flesh out: action: sign in Controller: Guestbook

@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1293615225 source:l:\codes\testcpp\main.cpp
+	<string.h>
+	<iostream>
+
+1293615225 
+
+1294189023 source:/media/NOW/codes/testCpp/main.cpp
+	<algorithm>
+	<arpa/inet.h>
+	<errno.h>
+	<netdb.h>
+	<netinet/in.h>
+	<signal.h>
+	<string.h>
+	<sys/socket.h>
+	<sys/stat.h>
+	<sys/statvfs.h>
+	<sys/types.h>
+	<sys/wait.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<iostream>
+	<string>
+	<sstream>
+

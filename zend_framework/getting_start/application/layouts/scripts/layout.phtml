@@ -1,0 +1,30 @@
+<?php 
+/*There is a variable, $this, available 
+ * which is an instance of the view object
+ * that was created during bootstrapping.
+ */ 
+
+echo $this->doctype();
+?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang='en' lang='en'>
+<head>
+	<?php
+	$this->headMeta()->appendHttpEquiv('Content-type', 'text/html;charset=utf-8');
+	$this->headTitle()->setSeparator(' - ');
+	$this->headTitle('Zend F Tutorial');
+
+	echo $this->headMeta();
+	echo $this->headTitle();
+	echo $this->headLink()->prependStylesheet($this->baseUrl().'/css/site.css');
+	?>
+
+</head>
+<body>
+<div id='content'>
+	<h1><?php echo $this->escape($this->title); ?></h1>
+	<?php echo $this->layout()->content; ?>
+</div>
+</body>
+</html>
+

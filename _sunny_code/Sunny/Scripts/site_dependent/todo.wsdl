@@ -1,0 +1,134 @@
+<?xml version ='1.0' encoding ='UTF-8' ?>
+<definitions 
+name='Sunny' 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace='todo.wdsl' 
+xmlns:tns='todo.wdsl' 
+xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' 
+xmlns='http://schemas.xmlsoap.org/wsdl/'
+>
+	<types>
+    	<xs:schema elementFormDefault="qualified" targetNamespace="todo.wdsl">
+			<xs:element name="getTodoListResponseDetails"><xs:complexType><xs:sequence>
+				<xs:element name="getTodoListResult" type="tns:TodoDataArray"/>
+			</xs:sequence></xs:complexType></xs:element>
+			<xs:element name="TodoDataArray"><xs:complexType><xs:sequence>
+				<xs:element name="TodoData" type="tns:TodoDataDetails"/>
+			</xs:sequence></xs:complexType></xs:element>	
+			<xs:element name="TodoDataDetails"><xs:complexType><xs:sequence>
+				<xs:element name="note" type="xs:string"/>
+				<xs:element name="date" type="xs:string"/>
+				<xs:element name="acro" xs:null="1"/>
+				<xs:element name="prio" type="xs:int"/>
+				<xs:element name="id" type="xs:int"/>
+			</xs:sequence></xs:complexType></xs:element>
+
+			<xs:element name="createTodoResponseDetails"><xs:complexType><xs:sequence>
+				<xs:element name="createTodoResult" type="xs:string"/>
+			</xs:sequence></xs:complexType></xs:element>
+
+			<xs:element name="updateTodoResponseDetails"><xs:complexType><xs:sequence>
+				<xs:element name="updateTodoResult" type="xs:string"/>
+			</xs:sequence></xs:complexType></xs:element>
+
+			<xs:element name="deleteTodoResponseDetails"><xs:complexType><xs:sequence>
+				<xs:element name="deleteTodoResult" type="xs:string"/>
+			</xs:sequence></xs:complexType></xs:element>
+
+		</xs:schema>
+	</types>
+	
+	
+	
+	<message name='getTodoListRequest'>
+	  <part name='acro' type='xs:string'/>
+	</message>
+	<message name='getTodoListResponse'>
+	  <part name='getTodoListResponse' type='tns:getTodoListResponseDetails'/>
+	</message>
+	
+	<message name='createTodoRequest'>
+	  <part name='acronym' type='xs:string'/>
+	  <part name='time' type='xs:string'/>
+	  <part name='note' type='xs:string'/>
+	  <part name='priority' type='xs:int'/>
+	</message>
+	<message name='createTodoResponse'>
+	  <part name='createTodoResponse' type='tns:createTodoResponseDetails'/>
+	</message>
+	
+	<message name='updateTodoRequest'>
+	  <part name='id' type='xs:int'/>
+	  <part name='acronym' type='xs:string'/>
+	  <part name='time' type='xs:string'/>
+	  <part name='note' type='xs:string'/>
+	  <part name='priority' type='xs:int'/>
+	</message>
+	<message name='updateTodoResponse'>
+	  <part name='updateTodoResponse' type='tns:updateTodoResponseDetails'/>
+	</message>
+	
+	<message name='deleteTodoRequest'>
+	  <part name='acronym' type='xs:string'/>
+	  <part name='id' type='xs:int'/>
+	</message>
+	<message name='deleteTodoResponse'>
+	  <part name='deleteTodoResponse' type='tns:deleteTodoResponseDetails'/>
+	</message>
+
+	
+	
+	<portType name='SunnyPortType'>
+	  <operation name='getTodoList'>
+	    <input message='tns:getTodoListRequest'/>
+	    <output message='tns:getTodoListResponse'/>  
+	  </operation>
+	  <operation name='createTodo'>
+	    <input message='tns:createTodoRequest'/>
+	    <output message='tns:createTodoResponse'/>  
+	  </operation>
+	  <operation name='updateTodo'>
+	    <input message='tns:updateTodoRequest'/>
+	    <output message='tns:updateTodoResponse'/>  
+	  </operation>
+	  <operation name='deleteTodo'>
+	    <input message='tns:deleteTodoRequest'/>
+	    <output message='tns:deleteTodoResponse'/>  
+	  </operation>
+	</portType>
+	
+	
+	
+	<binding name='SunnyBinding' type='tns:SunnyPortType'>
+	  <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+	  <operation name='getTodoList'>
+	    <soap:operation soapAction='getTodoList'/>
+	    <input><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></input>
+	    <output><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></output>
+	  </operation>
+	  <operation name='createTodo'>
+	    <soap:operation soapAction='createTodo'/>
+	    <input><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></input>
+	    <output><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></output>
+	  </operation>
+	  <operation name='updateTodo'>
+	    <soap:operation soapAction='updateTodo'/>
+	    <input><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></input>
+	    <output><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></output>
+	  </operation>
+	  <operation name='deleteTodo'>
+	    <soap:operation soapAction='deleteTodo'/>
+	    <input><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></input>
+	    <output><soap:body use='encoded' namespace='todo.wdsl' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/></output>
+	  </operation>
+	</binding>
+	
+	
+	
+	<service name='SunnyService'>
+	  <port name='SunnyPortType' binding='tns:SunnyBinding'>
+	    <soap:address location='http://lol.comlab.bth.se:8090'/>
+	  </port>
+	</service>
+	
+</definitions>
