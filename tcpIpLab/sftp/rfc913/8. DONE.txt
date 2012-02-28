@@ -1,0 +1,10 @@
+
+     8. DONE
+
+         Tells the remote system you are done.
+
+         The remote system replies:
+
+            +(the message may be charge/accounting info)
+
+         and then both systems close the connection.

@@ -1,0 +1,38 @@
+!SESSION 2012-02-13 22:14:39.536 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_18
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -showlocation
+Command-line arguments:  -os win32 -ws win32 -arch x86 -showlocation
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:15:38.523
+!MESSAGE NLS unused message: RemoteServerConfigurationPage_RemoteConfiguratiuon in: com.zend.php.remoteproject.internal.ui.wizard.messages
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:15:38.524
+!MESSAGE NLS unused message: RemoteServerConfigurationPage_formatServerURLError in: com.zend.php.remoteproject.internal.ui.wizard.messages
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:15:38.527
+!MESSAGE NLS missing message: CreateProjectWorkspaceJob_0 in: com.zend.php.remoteproject.internal.ui.wizard.messages
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:15:38.528
+!MESSAGE NLS missing message: CreateProjectWorkspaceJob_1 in: com.zend.php.remoteproject.internal.ui.wizard.messages
+!SESSION 2012-02-13 22:16:43.701 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_18
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -showlocation
+Command-line arguments:  -os win32 -ws win32 -arch x86 -showlocation
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:16:49.436
+!MESSAGE NLS unused message: RemoteServerConfigurationPage_RemoteConfiguratiuon in: com.zend.php.remoteproject.internal.ui.wizard.messages
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:16:49.436
+!MESSAGE NLS unused message: RemoteServerConfigurationPage_formatServerURLError in: com.zend.php.remoteproject.internal.ui.wizard.messages
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:16:49.436
+!MESSAGE NLS missing message: CreateProjectWorkspaceJob_0 in: com.zend.php.remoteproject.internal.ui.wizard.messages
+
+!ENTRY org.eclipse.osgi 2 1 2012-02-13 22:16:49.436
+!MESSAGE NLS missing message: CreateProjectWorkspaceJob_1 in: com.zend.php.remoteproject.internal.ui.wizard.messages

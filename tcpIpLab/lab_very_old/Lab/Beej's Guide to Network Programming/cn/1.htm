@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>c语言socket编程指南,Linux技术文章,Linux系列教程,Linux</title>
+<meta  name="keywords" content="c语言socket编程指南,Linux技术文章,Linux系列教程,Linux,操作系统"/>
+<meta  name="description" content="c语言socket编程指南介绍 　　Socket 编程让你沮丧吗？从man pages中很难得到有用的信息吗？你想跟上时代去编Internet相关的程序，但是为你在调用 connect() 前的bind() 的结构而不知所措？等等…    &amp;nbs"/>
+<meta name="robots" content="index,follow"/>
+<meta name="GOOGLEBOT" content="INDEX,FOLLOW" />
+<link href="/css/2010/article/css.css" rel="stylesheet" type="text/css" />
+<link href="/css/2010/article/ad.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" language="javascript" src="/JS/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" language="javascript" src="/JS/2010/Article.js"></script>
+</head>
+<body>
+<div class="contant">
+	 <div class="index_top">
+	  <p>领先的中文IT技术网站&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.firnow.com" target="_blank">IT技术从现在起飞</a></p>
+	  <span>飞诺旗下:&nbsp;<a href="http://bbs.firnow.com" target="_blank">技术社区</a>&nbsp;|&nbsp;<a href="http://ebook.firnow.com" target="_blank">在线电子书</a>&nbsp;|&nbsp;<a href="http://test.firnow.com" target="_blank">在线试题</a>&nbsp;|&nbsp;<a href="http://download.firnow.com" target="_blank">资源下载</a>&nbsp;|&nbsp;<a href="http://so.firnow.com" target="_blank">飞诺搜索</a>&nbsp;|&nbsp;<a href="http://blog.firnow.com" target="_blank">技术博客</a></span>
+	</div>
+	<div class="index_header">
+	    <div class="index_logo"><a href="http://www.firnow.com" target="_blank"><img src="/images/2010/article/logo.gif" width="181" height="88" border="0" /></a></div>
+	    <div class="ad1"><script language="javascript" src="/ad/2010/article/ad1.js"></script></div>
+		<div class="index_header_right">
+		  <table width="100%" height="82" border="0" cellpadding="10">
+            <tr>
+              <td colspan="4" valign="middle">
+			    <form name="search" onSubmit="search(document.all.search.value);">
+                <img style="float:left; margin-top:2px;" src="/images/2010/article/sousu.gif" width="68" height="25" />
+                <label>
+                <input type="text" class="index_header_right_text1" name="search" />
+              </label>
+			  <label>
+                <input name="Submit" style="float:left; margin-left:6px; display:inline;" type="image" value="提交" src="/images/2010/article/sou_ok.gif"  />
+              </label></form></td>
+            </tr>
+            <form name="login" onSubmit="loginbbs();">
+            <tr>
+              <td width="19%">用户名：</td>
+              <td width="33%"><label>
+                <input type="text" class="index_header_right_text2" name="username" />
+              </label></td>
+              <td width="16%">密&nbsp;&nbsp;&nbsp;码：</td>
+              <td width="32%"><input type="password" class="index_header_right_text2" name="password" /></td>
+            </tr>
+            <tr>
+              <td><label><input type="submit" value="" class="input_login"></label></td>
+              <td>&nbsp;&nbsp;<input type="buttom" onclick="self.location='http://bbs.firnow.com/register.aspx'" value="" class="input_reg"></td>
+              <td><a href="http://www.firnow.com" target="_blank">飞诺网</a></td>
+              <td><a href="javascript:window.external.addFavorite('http://www.firnow.com','飞诺网');">加入收藏</a></td>
+            </tr>
+            </form>
+          </table>
+		</div>
+	</div>
+	<div class="index_banner">
+	    <a href="http://www.firnow.com" class="index_banner_on" onmouseover="ChgTab(1);" target="_blank">飞诺网</a>
+		<a href="/list/10601.shtml" onmouseover="ChgTab(2);" target="_blank">Linux</a>
+		<a href="http://news.firnow.com" target="_blank">新闻频道</a>
+		<a href="http://dev.firnow.com" target="_blank">开发频道</a>
+		<a href="http://sys.firnow.com/" target="_blank">系统频道</a>
+		<a href="http://server.firnow.com/" target="_blank">服务器</a>
+		<a href="http://network.firnow.com/" target="_blank">网络频道</a>
+		<a href="http://netsecurity.firnow.com/" target="_blank">网络安全</a>
+		<a href="http://Dev.firnow.com/java.shtml" target="_blank">Java频道</a>
+		<a href="http://Dev.firnow.com/c.shtml" target="_blank">C/C++</a>
+		<a href="http://Dev.firnow.com/php.shtml" target="_blank">PHP开发</a>
+		<a href="http://ebook.firnow.com" target="_blank">电子书</a>
+		<a href="http://download.firnow.com" target="_blank">资源下载</a>
+		<a href="http://bbs.firnow.com" target="_blank">社&nbsp;区</a>
+		<a href="http://blog.firnow.com" target="_blank">博&nbsp;客</a>
+		<a href="http://test.firnow.com" target="_blank">在线试题</a>
+	</div>
+	<div class="index_banner2" id="index1">
+	    	    <a href="/list/106.shtml" target="_blank">操作系统</a>
+	    	    <a href="/list/10601.shtml" target="_blank">Linux</a>
+	    	    <a href="/list/10602.shtml" target="_blank">Windows xp</a>
+	    	    <a href="/list/10603.shtml" target="_blank">Windows 2003</a>
+	    	    <a href="/list/10604.shtml" target="_blank">Windows 2000/NT</a>
+	    	    <a href="/list/10605.shtml" target="_blank">DOS</a>
+	    	    <a href="/list/10606.shtml" target="_blank">Mac OS X</a>
+	    	    <a href="/list/10607.shtml" target="_blank">Vista</a>
+	    	    <a href="/list/10608.shtml" target="_blank">FreeBSD</a>
+	    	    <a href="/list/10609.shtml" target="_blank">Solaris</a>
+	    	    <a href="/list/10610.shtml" target="_blank">SCO UNIX</a>
+	    	    <a href="/list/10611.shtml" target="_blank">AIX</a>
+	    	    <a href="/list/10612.shtml" target="_blank">Windows 2008</a>
+	    	</div>
+	<div class="cle"></div>
+		<div class="index_banner2" style="display:none" id="index2">
+	     	    <a href="/list/1060101.shtml" target="_blank">Linux系列教程</a>
+	    	    <a href="/list/1060102.shtml" target="_blank">Linux应用技巧</a>
+	    	    <a href="/list/1060103.shtml" target="_blank">Linux技术文章</a>
+	    	</div>
+	<div class="cle"></div>
+	<div class="index_banner3">
+	   <a href="/list/103.shtml" target="_blank">编程开发</a>
+	   <a href="/list/10303.shtml" target="_blank">JAVA</a>
+	   <a href="/c.shtml" target="_blank">C/C++</a>
+	   <a href="/list/10302.shtml" target="_blank">C++</a>
+	   <a href="/list/10312.shtml" target="_blank">VC</a>
+	   <a href="/list/10301.shtml" target="_blank">C语言</a>
+	   <a href="/list/10304.shtml" target="_blank">VB</a>
+	   <a href="/list/10314.shtml" target="_blank">C#</a>
+	   <a href="/list/10305.shtml" target="_blank">Delphi</a>
+	   <a href="/list/10306.shtml" target="_blank">Foxpro</a>
+	   <a href="/list/10307.shtml" target="_blank">汇编</a>
+	   <a href="/list/10313.shtml" target="_blank">shell编程</a>
+	   <a href="/list/10308.shtml" target="_blank">游戏开发</a>
+	   <a href="/list/10310.shtml" target="_blank">软件工程师</a>
+	   <a href="/list/104.shtml" target="_blank">WEB开发</a>
+	   <a href="/list/10406.shtml" target="_blank">PHP</a>
+	   <a href="/list/10405.shtml" target="_blank">ASP</a>
+	   <a href="/list/10404.shtml" target="_blank">Asp.net</a>
+	   <a href="/list/10405.shtml" target="_blank">JSP</a>
+	   <a href="/list/10410.shtml" target="_blank">AJAX</a>
+	   <a href="/list/10408.shtml" target="_blank">CGI</a>
+	   <a href="/list/10108.shtml" target="_blank">JavaScript</a>
+	   <a href="/list/10104.shtml" target="_blank">HTML</a>
+	   <a href="/list/10105.shtml" target="_blank">CSS</a>
+	   <a href="/list/107.shtml" target="_blank">数据库</a>
+	   <a href="/list/10703.shtml" target="_blank">MSSQL</a>
+	   <a href="/list/10702.shtml" target="_blank">Mysql</a>
+	   <a href="/list/10704.shtml" target="_blank">Oracle</a>
+	   <a href="/list/10701.shtml" target="_blank">Access</a>
+	   <a href="/list/10705.shtml" target="_blank">Sybase</a>
+	   <a href="/list/10707.shtml" target="_blank">DB2</a>
+	   <a href="/list/1070304.shtml" target="_blank">sql2005</a>
+	   <a href="/list/105.shtml" target="_blank">Office</a>
+	   <a href="/list/10501.shtml" target="_blank">Word</a>
+	   <a href="/list/10502.shtml" target="_blank">Excel</a>
+	   <a href="/list/10503.shtml" target="_blank">Powerpoint</a>
+	   <a href="/list/10504.shtml" target="_blank">Wps</a>
+	   <a href="/list/109.shtml" target="_blank">认证考试</a>
+	   <a href="/list/1090103.shtml" target="_blank">二级C语言</a>
+	   <a href="/list/1090203.shtml" target="_blank">三级网络</a>
+	   <a href="/list/109030101.shtml" target="_blank">程序员</a>
+	   <a href="/list/109030202.shtml" target="_blank">网络工程师</a>
+	   <a href="/list/10905.shtml" target="_blank">思科认证</a>
+	</div>
+	<div class="index_banner4">
+	<img src="/images/2010/article/logo1.gif" />
+	<p>您当前的位置：<a href="http://www.firnow.com" target="_blank">飞诺网</a>
+            >>&nbsp<a href="/linux.shtml" target="_blank">linux</a>
+          >>&nbsp<a href="/list/1060103.shtml" target="_blank">Linux技术文章</a></p>
+	</div>
+   <div class="index_main">
+   	<div class="ad2"><script language="javascript" src="/ad/2010/article/ad2.js"></script></div>
+   	<div class="ad3"><script language="javascript" src="/ad/2010/article/ad3.js"></script></div>
+  <div class="cle"></div>
+   <div class="index_main_left">
+        <div class="index_main_left_1">
+		     <div class="index_main_left_1_top">
+			      <div class="index_main_left_1_top2"><p>c语言socket编程指南</p></div>
+				  <div class="index_main_left_1_top3">
+				      <p>www.firnow.com&nbsp;&nbsp;&nbsp;&nbsp;时间&nbsp;：&nbsp;2008-08-15&nbsp;&nbsp;作者：佚名 &nbsp;&nbsp;编辑：本站 点击：&nbsp;&nbsp;<span id="articleTimes"></span> <a href="#comment" style="color:#F55308;">[&nbsp;评论&nbsp;]</a></p>
+				  </div>
+			 </div>
+			 <div class="index_main_left_center">
+			 <div class="ad4"><script language="javascript" src="/ad/2010/article/ad4.js"></script></div>
+			 <div class="ad5"><script language="javascript" src="/ad/2010/article/ad5.js"></script></div>
+			 <div class="ad6"><script language="javascript" src="/ad/2010/article/ad6.js"></script></div>
+			 
+				<BR>
+<br>介绍 <br>　　Socket 编程让你沮丧吗？从man pages中很难得到有用的信息吗？你想跟上时代去编Internet相关的程序，但是为你在调用 connect() 前的bind() 的结构而不知所措？等等…&nbsp; <br>&nbsp;&nbsp;&nbsp; 好在我已经将这些事完成了，我将和所有人共享我的知识了。如果你了解 C 语言并想穿过网络编程的沼泽，那么你来对地方了。 <br>-------------------------------------------------------------------------------- <br>读者对象&nbsp; <br>　　这个文档是一个指南，而不是参考书。如果你刚开始 socket 编程并想找一本入门书，那么你是我的读者。但这不是一本完全的 socket 编程书。 <br>-------------------------------------------------------------------------------- <br>平台和编译器&nbsp; <br>　　这篇文档中的大多数代码都在 Linux 平台PC 上用 GNU 的 gcc 成功编译过。而且它们在 HPUX平台 上用 gcc 也成功编译过。但是注意，并不是每个代码片段都独立测试过。 <br>-------------------------------------------------------------------------------- <br>目录： <br>1) 什么是套接字？&nbsp; <br>2) Internet 套接字的两种类型&nbsp; <br>3) 网络理论&nbsp; <br>4) 结构体 <br>5) 本机转换 <br>6) IP 地址和如何处理它们&nbsp; <br>7) socket()函数 <br>8) bind()函数 <br>9) connect()函数 <br>10) listen()函数 <br>11) accept()函数 <br>12) send()和recv()函数 <br>13) sendto()和recvfrom()函数 <br>14) close()和shutdown()函数 <br>15) getpeername()函数 <br>16) gethostname()函数 <br>17) 域名服务（DNS） <br>18) 客户-服务器背景知识&nbsp; <br>19) 简单的服务器 <br>20) 简单的客户端 <br>21) 数据报套接字Socket <br>22) 阻塞 <br>23) select()--多路同步I/O <br>24) 参考资料&nbsp; <br>-------------------------------------------------------------------------------- <br>什么是 socket？&nbsp; <br>　
+　你经常听到人们谈论着 “socket”，或许你还不知道它的确切含义。现在让我告诉你：它是使用 标准Unix 文件描述符 (file
+descriptor)
+和其它程序通讯的方式。什么？你也许听到一些Unix高手(hacker)这样说过：“呀，Unix中的一切就是文件！”那个家伙也许正在说到一个事实：
+Unix 程序在执行任何形式的 I/O
+的时候，程序是在读或者写一个文件描述符。一个文件描述符只是一个和打开的文件相关联的整数。但是(注意后面的话)，这个文件可能是一个网络连接，
+FIFO，管道，终端，磁盘上的文件或者什么其它的东西。Unix
+中所有的东西就是文件！所以，你想和Internet上别的程序通讯的时候，你将要使用到文件描述符。你必须理解刚才的话。现在你脑海中或许冒出这样的念
+头：“那么我从哪里得到网络通讯的文件描述符呢？”，这个问题无论如何我都要回答：你利用系统调用 socket()，它返回套接字描述符
+(socket descriptor)，然后你再通过它来进行send() 和
+recv()调用。“但是...”，你可能有很大的疑惑，“如果它是个文件描述符，那么为什
+么不用一般调用read()和write()来进行套接字通讯？”简单的答案是：“你可以使用！”。详细的答案是：“你可以，但是使用send()和
+recv()让你更好的控制数据传输。”存在这样一个情况：在我们的世界上，有很多种套接字。有DARPA Internet 地址
+(Internet 套接字)，本地节点的路径名 (Unix套接字)，CCITT X.25地址 (你可以将X.25
+套接字完全忽略)。也许在你的Unix 机器上还有其它的。我们在这里只讲第一种：Internet 套接字。 <br>-------------------------------------------------------------------------------- <br>Internet 套接字的两种类型&nbsp; <br>　　什么意思？有两种类型的Internet 套接字？是的。不，我在撒谎。其实还有很多，但是我可不想吓着你。我们这里只讲两种。除了这些, 我打算另外介绍的 "Raw Sockets" 也是非常强大的，很值得查阅。 <br>那
+么这两种类型是什么呢？一种是"Stream Sockets"（流格式），另外一种是"Datagram
+Sockets"（数据包格式）。我们以后谈到它们的时候也会用到 "SOCK_STREAM" 和
+"SOCK_DGRAM"。数据报套接字有时也叫“无连接套接字”(如果你确实要连接的时候可以用connect()。)
+流式套接字是可靠的双向通讯的数据流。如果你向套接字按顺序输出“1，2”，那么它们将按顺序“1，2”到达另一边。它们是无错误的传递的，有自己的错误
+控制，在此不讨论。 <br>&nbsp;&nbsp;&nbsp; 有什么在使用流式套接字？你可能听说过
+telnet，不是吗？它就使用流式套接字。你需要你所输入的字符按顺序到达，不是吗？同样，WWW浏览器使用的 HTTP
+协议也使用它们来下载页面。实际上，当你通过端口80 telnet 到一个 WWW 站点，然后输入 “GET pagename”
+的时候，你也可以得到 HTML 的内容。为什么流式套接字可以达到高质量的数据传输？这是因为它使用了“传输控制协议 (The
+Transmission Control Protocol)”，也叫 “TCP” (请参考 RFC-793 获得详细资料。)TCP
+控制你的数据按顺序到达并且没有错 <br>误。你也许听到 “TCP” 是因为听到过 “TCP/IP”。这里的 IP 是指“Internet 协议”(请参考 RFC-791。) IP 只是处理 Internet 路由而已。&nbsp; <br>&nbsp;&nbsp;&nbsp;
+那么数据报套接字呢？为什么它叫无连接呢？为什么它是不可靠的呢？有这样的一些事实：如果你发送一个数据报，它可能会到达，它可能次序颠倒了。如果它到
+达，那么在这个包的内部是无错误的。数据报也使用 IP 作路由，但是它不使用 TCP。它使用“用户数据报协议 (User Datagram
+Protocol)”，也叫 “UDP” (请参考 RFC-768。)&nbsp; <br>&nbsp;&nbsp;&nbsp; 为什么它们是无连接的呢？主要是因为它并不象流式套接字那样维持一个连接。你只要建立一个包，构造一个有目标信息的IP 头，然后发出去。无需连接。它们通常使用于传输包-包信息。简单的应用程序有：tftp, bootp等等。 <br>&nbsp;&nbsp;&nbsp;
+你也许会想：“假如数据丢失了这些程序如何正常工作？”我的朋友，每个程序在 UDP 上有自己的协议。例如，tftp
+协议每发出的一个被接受到包，收到者必须发回一个包来说“我收到了！” (一个“命令正确应答”也叫“ACK”
+包)。如果在一定时间内(例如5秒)，发送方没有收到应答，它将重新发送，直到得到 ACK。这一ACK过程在实现 SOCK_DGRAM
+应用程序的时候非常重要。 <br>-------------------------------------------------------------------------------- <br>网络理论 <br>　　既然我刚才提到了协议层，那么现在是讨论网络究竟如何工作和一些 关于 SOCK_DGRAM 包是如何建立的例子。当然，你也可以跳过这一段， 如果你认为已经熟悉的话。&nbsp; <br>&nbsp;&nbsp;&nbsp;
+现在是学习数据封装 (Data Encapsulation) 的时候了！它非常非常重
+要。它重要性重要到你在网络课程学（图1：数据封装）习中无论如何也得也得掌握它。主要 的内容是：一个包，先是被第一个协议(在这里是TFTP
+)在它的报头（也许 是报尾）包装(“封装”)，然后，整个数据(包括 TFTP 头)被另外一个协议 (在这里是 UDP )封装，然后下一个(
+IP )，一直重复下去，直到硬件(物理) 层( 这里是以太网 )。&nbsp; <br>当另外一台机器接收到包，硬件先剥去以太网头，内核剥去IP和UDP
+头，TFTP程序再剥去TFTP头，最后得到数据。现在我们终于讲到声名狼藉的网络分层模型 (Layered Network
+Model)。这种网络模型在描述网络系统上相对其它模型有很多优点。例如， 你可以写一个套接字程序而不用关心数据的物理传输(串行口，以太网，连
+接单元接口 (AUI) 还是其它介质)，因为底层的程序会为你处理它们。实际 的网络硬件和拓扑对于程序员来说是透明的。 <br>不说其它废话了，我现在列出整个层次模型。如果你要参加网络考试， 可一定要记住：&nbsp; <br>应用层 (Application) <br>表示层 (Presentation) <br>会话层 (Session) <br>传输层(Transport) <br>网络层(Network) <br>数据链路层(Data Link) <br>物理层(Physical) <br>物理层是硬件(串口，以太网等等)。应用层是和硬件层相隔最远的--它 是用户和网络交互的地方。&nbsp; <br>这个模型如此通用，如果你想，你可以把它作为修车指南。把它对应 到 Unix，结果是： <br>应用层(Application Layer) (telnet, ftp,等等) <br>传输层(Host-to-Host Transport Layer) (TCP, UDP) <br>Internet层(Internet Layer) (IP和路由) <br>网络访问层 (Network Access Layer) (网络层，数据链路层和物理层) <br>现在，你可能看到这些层次如何协调来封装原始的数据了。&nbsp; <br>看
+看建立一个简单的数据包有多少工作？哎呀，你将不得不使用 "cat" 来建立数据包头！这仅仅是个玩笑。对于流式套接字你要作的是 send() 发
+送数据。对于数据报式套接字，你按照你选择的方式封装数据然后使用 sendto()。内核将为你建立传输层和 Internet
+层，硬件完成网络访问层。 这就是现代科技。&nbsp; <br>现在结束我们的网络理论速成班。哦，忘记告诉你关于路由的事情了。 但是我不准备谈它，如果你真的关心，那么参考 IP RFC。 <br>-------------------------------------------------------------------------------- <br>结构体&nbsp; <br>　　终于谈到编程了。在这章，我将谈到被套接字用到的各种数据类型。 因为它们中的一些内容很重要了。&nbsp; <br>首先是简单的一个：socket描述符。它是下面的类型：&nbsp; <br>int&nbsp; <br>仅仅是一个常见的 int。&nbsp; <br>从
+现在起，事情变得不可思议了，而你所需做的就是继续看下去。注 意这样的事实：有两种字节排列顺序：重要的字节 (有时叫 "octet"，即八
+位位组) 在前面，或者不重要的字节在前面。前一种叫“网络字节顺序 (Network Byte
+Order)”。有些机器在内部是按照这个顺序储存数据，而另外 一些则不然。当我说某数据必须按照 NBO 顺序，那么你要调用函数(例如
+htons() )来将它从本机字节顺序 (Host Byte Order) 转换过来。如果我没有 提到 NBO， 那么就让它保持本机字节顺序。
+<br>我的第一个结构(在这个技术手册TM中)--struct sockaddr.。这个结构 为许多类型的套接字储存套接字地址信息：&nbsp; <br>struct sockaddr {&nbsp; <br>　　 unsigned short sa_family; /* 地址家族, AF_xxx */&nbsp; <br>　　 char sa_data[14]; /*14字节协议地址*/&nbsp; <br>　　 };&nbsp; <br>sa_family 能够是各种各样的类型，但是在这篇文章中都是 "AF_INET"。 sa_data包含套接字中的目标地址和端口信息。这好像有点 不明智。&nbsp; <br>为了处理struct sockaddr，程序员创造了一个并列的结构： struct sockaddr_in ("in" 代表 "Internet"。) <br>struct sockaddr_in {&nbsp; <br>　　 short int sin_family; /* 通信类型 */&nbsp; <br>　　 unsigned short int sin_port; /* 端口 */&nbsp; <br>　　 struct in_addr sin_addr; /* Internet 地址 */&nbsp; <br>　　 unsigned char sin_zero[8]; /* 与sockaddr结构的长度相同*/&nbsp; <br>　　 };&nbsp; <br>用
+这个数据结构可以轻松处理套接字地址的基本元素。注意 sin_zero (它被加入到这个结构，并且长度和 struct sockaddr 一样)
+应该使用函数 bzero() 或 memset() 来全部置零。 同时，这一重要的字节，一个指向
+sockaddr_in结构体的指针也可以被指向结构体sockaddr并且代替它。这 样的话即使 socket() 想要的是 struct
+sockaddr *，你仍然可以使用 struct sockaddr_in，并且在最后转换。同时，注意 sin_family 和 struct
+sockaddr 中的 sa_family 一致并能够设置为 "AF_INET"。最后，sin_port和 sin_addr
+必须是网络字节顺序 (Network Byte Order)！ <br>你也许会反对道："但是，怎么让整个数据结构 struct in_addr sin_addr 按照网络字节顺序呢?" 要知道这个问题的答案，我们就要仔细的看一看这 个数据结构： struct in_addr, 有这样一个联合 (unions)：&nbsp; <br>/* Internet 地址 (一个与历史有关的结构) */&nbsp; <br>　　 struct in_addr {&nbsp; <br>　　 unsigned long s_addr;&nbsp; <br>　　 };&nbsp; <br>它
+曾经是个最坏的联合，但是现在那些日子过去了。如果你声明 "ina" 是数据结构 struct sockaddr_in 的实例，那么
+"ina.sin_addr.s_addr" 就储 存4字节的 IP 地址(使用网络字节顺序)。如果你不幸的系统使用的还是恐 怖的联合
+struct in_addr ，你还是可以放心4字节的 IP 地址并且和上面 我说的一样(这是因为使用了“#define”。)&nbsp; <br>-------------------------------------------------------------------------------- <br>本机转换 <br>　　我们现在到了新的章节。我们曾经讲了很多网络到本机字节顺序的转 换，现在可以实践了！&nbsp; <br>你
+能够转换两种类型： short (两个字节)和 long (四个字节)。这个函 数对于变量类型 unsigned 也适用。假设你想将
+short 从本机字节顺序转 换为网络字节顺序。用 "h" 表示 "本机 (host)"，接着是 "to"，然后用 "n" 表 示 "网络
+(network)"，最后用 "s" 表示 "short"： h-to-n-s, 或者 htons() ("Host to Network
+Short")。 <br>太简单了...&nbsp; <br>如果不是太傻的话，你一定想到了由"n"，"h"，"s"，和 "l"形成的正确 组合，例如这里肯定没有stolh() ("Short to Long Host") 函数，不仅在这里 没有，所有场合都没有。但是这里有： <br>htons()--"Host to Network Short" <br>　　htonl()--"Host to Network Long" <br>　　ntohs()--"Network to Host Short" <br>　　ntohl()--"Network to Host Long" <br>现
+在，你可能想你已经知道它们了。你也可能想：“如果我想改变 char 的顺序要怎么办呢?” 但是你也许马上就想到，“用不着考虑的”。你也许
+会想到：我的 68000 机器已经使用了网络字节顺序，我没有必要去调用 htonl() 转换 IP
+地址。你可能是对的，但是当你移植你的程序到别的机器 上的时候，你的程序将失败。可移植性！这里是 Unix 世界！记住：在你
+将数据放到网络上的时候，确信它们是网络字节顺序的。&nbsp; <br>最后一点：为什么在数据结构 struct sockaddr_in 中，
+sin_addr 和 sin_port 需要转换为网络字节顺序，而sin_family 需不需要呢? 答案是： sin_addr 和
+sin_port 分别封装在包的 IP 和 UDP 层。因此，它们必须要 是网络字节顺序。但是 sin_family 域只是被内核
+(kernel) 使用来决定在数 据结构中包含什么类型的地址，所以它必须是本机字节顺序。同时， sin_family
+			 <div align="center" class="pager"><span id="pagesSpan">　<span id="1">1</span>　<a href="136066_2.html">2</a>　<a href="136066_3.html">3</a>　<a href="136066_4.html">4</a>　<a href="136066_5.html">5</a></span></div>
+			 <div class="ad7"><script language="javascript" src="/ad/2010/article/ad7.js"></script></div>
+			 <div class="ad8"><script language="javascript" src="/ad/2010/article/ad8.js"></script></div>
+			 <div class="index_main_err">如果图片或页面不能正常显示请<a href="javascript:void(0)" onClick="ReportError()" class= "redlink"><font color="#990000"><strong>点击这里</strong></font></a></div>
+			 </div>
+			 <div class="index_main_left_foot">
+			      <div class="index_main_left_foot1">
+				  <p><a href="javascript:window.external.addFavorite(self.location,document.title);">【收藏此页】</a><a href="http://bbs.firnow.com" target="_blank">【飞诺社区】</a><a href="#comment">【发表评论】</a><a href="javascript:window.close()">【关闭】</a></p>
+				  <a href="#comment"><img src="/images/2010/article/ping.gif" width="149" height="34" border="0" /></a>
+				  </div>
+				  <div class="index_main_left_foot2">
+				  				  <p>上一篇：<a href="/course/6_system/linux/Linuxjs/2008815/136065.html">Linux USB驱动框架分析</a></p>
+				                    				  <p>下一篇：<a href="/course/6_system/linux/Linuxjs/2008815/136067.html">A Tip: Direct Configure Script To the Correct Path</a></p>
+				  				  </div>
+			 </div> 
+		</div>
+		<div class="ad9"><script language="javascript" src="/ad/2010/article/ad9.js"></script></div>
+		<div class="index_main_left_3">Linux技术文章推荐文章</div>
+		<div class="index_main_left_4">
+		  <ul>
+		  		  		  <li><a href="/course/6_system/linux/Linuxjs/20091204/184085.html" target="_blank">[转]利用Intents实现软件的开放接口</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20100323/201091.html" target="_blank">RHEL5.4配置yum仓库</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008619/126781.html" target="_blank">关于控制台字体的问题［未］</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/200871/129590.html" target="_blank">Framebuffer的配置及应用</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20091101/180820.html" target="_blank">inux内核ip分片函数ip_fragment解析</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20090904/173839.html" target="_blank">在Linux中限制用户空间</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20090823/170268.html" target="_blank">X Window研究笔记(12)-截取点</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008108/149142.html" target="_blank">安装双系统的apic问题的解决</a></li>
+		  		  </ul>
+		  <ul>
+		  		  		  <li><a href="/course/6_system/linux/Linuxjs/20090506/166670.html" target="_blank">UNIX进程专辑</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008611/124699.html" target="_blank">snmp详解 </a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20090318/162408.html" target="_blank">fedora 9安装mplayer详解</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/200865/122220.html" target="_blank">The Linux Equivalent Project</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008831/139106.html" target="_blank">系统备份(用Partimage来备份/恢复分区)</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20091006/178047.html" target="_blank">Linux 超级命令集合</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008821/136833.html" target="_blank">测试多播的一些小工具</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/200873/129924.html" target="_blank">【转】2.6内核设备的注册模板</a></li>
+		  		  </ul>
+		</div>
+		<div class="index_main_left_5">
+		      <div class="index_main_left_5_top"><p><a name="comment"></a>文章评论</p></div>
+			  <div id="divComment" class="index_main_left_5_main"></div>
+		</div>
+		<div class="index_main_left_6">
+		    <div class="index_main_left_6_left">
+			     <div class="index_main_left_6_left_top">请您留言</div>
+				 <div class="index_main_left_6_left_ceneter">
+				  <form>
+				   <table width="84%" height="216" border="0" cellpadding="10">
+                     <tr>
+                       <td width="19%" height="29">昵称：</td>
+                       <td width="81%"><label>
+                         <input type="text" class="index_main_left_6_left_ceneter_text" style="width:150px;" name="tbName" id="tbName" onclick="this.focus();this.select()" maxlength="20" />
+                       </label></td>
+                     </tr>
+                     <tr>
+                       <td>验证码：</td>
+                       <td>
+                       <span style="float:left;"><input name="tbCode" id="tbCode" class="index_main_left_6_left_ceneter_text" type="text" size="6"  /></span><span id="spanCode" style="float:left; clear:right;"><img  id="Img2" onclick="this.src=this.src"  style="display:none;"/></span>
+                     </tr>
+                     <tr>
+                       <td height="26" colspan="2"><a href="http://bbs.firnow.com/register.aspx" style="color:#FF0000">注册会员</a> <a href="http://bbs.firnow.com/login.aspx">会员登录</a></td>
+                     </tr>
+                     <tr>
+                       <td height="100" colspan="2"><label>
+                         <a name="comment"></a><textarea name="tbContent" id="tbContent" class="index_main_left_6_left_ceneter_textarea" rows="5"></textarea>
+                       </label></td>
+                     </tr>
+                     <tr>
+                       <td colspan="2"><label>
+                         <input id="btnCommit" name="btnCommit"  type="image" value="提交" src="/images/2010/article/fabiao.gif" />
+                       </label></td>
+                     </tr>
+                   </table>
+				   </form>
+				 </div>
+			</div>
+			<div class="index_main_left_6_right">
+			   <div class="index_main_left_6_right_top">也许你对以下文章感兴趣</div>
+			   <div class="index_main_left_6_right_center">
+			     <ul>
+				  		          				  <li><a href="/course/6_system/linux/Linuxjs/20090309/160158.html" target="_blank">修改deb包的方法[转]</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/20081117/151806.html" target="_blank">下载：NVIDIA显卡Linux驱动177.82版</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/200865/122252.html" target="_blank">转贴helper的分析文章,独孤大哥的</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/20100107/187898.html" target="_blank">install Razor Pyzor DCC</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/2008831/139155.html" target="_blank">Linux下GNU调试器gdb详细说明</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/20071027/80349.html" target="_blank">blackfin toolchain的配置</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/2008911/141912.html" target="_blank">CPU体系结构介绍</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/200896/139637.html" target="_blank">关于卸载firefox plugins</a></li>
+				  				  </ul>
+			   </div>
+			</div>
+		</div>
+   </div>
+   <div class="index_main_right">
+   <div class="index_main_right1">
+	     <div class="ad10"><script language="javascript" src="/ad/2010/article/ad10.js"></script></div>
+	     <div class="index_main_right1_top">BBS社区热贴</div>
+	        <ul>
+			<script type="text/javascript" src="http://bbs.firnow.com/tools/showtopics.aspx?order=2&template=7&encoding=GB2312"></script>
+			</ul>
+	     </div>
+		<div class="index_main_right1" style="margin-top:5px;">
+		     <div class="index_main_right1_top1">Linux技术文章相关文章</div>
+		        <ul style="background:#F3F4F6">
+				  				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70530.html" target="_blank">Linux下使用CUPS提供打印服务</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70542.html" target="_blank">linux书籍推荐</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70520.html" target="_blank">使用oprofile分析性能瓶颈</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70554.html" target="_blank">gdb调试需要使用到的一些知识（心得）</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70544.html" target="_blank">Database test: dual Intel Xeon 5160</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70548.html" target="_blank">全球Linux用户知多少？</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70568.html" target="_blank">Infragistics做图 (原创人：yizhiduxiu)</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70524.html" target="_blank">分析简单的线性只读文件系统romfs</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70560.html" target="_blank">想到linux到其它，开源对商业化的软件是一个促进</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70566.html" target="_blank">tftp 的安装，配置与使用</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70519.html" target="_blank">oprofile for godson2e 移植手记</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70532.html" target="_blank">微软先发声明   以便保全面子</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136108.html" target="_blank">linux 快捷键</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136117.html" target="_blank">单片机在嵌入式系统应用中的抗干扰措施</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136082.html" target="_blank">PXE引导无人值守安装LINUX </a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136069.html" target="_blank">常用的RBL服务器列表、介绍及Postfix配置</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136068.html" target="_blank">基于FC5的DWL-G650+A无线网卡在NDISwrapper下的驱动</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136112.html" target="_blank">金相显微镜|荧光显微镜|偏光显微镜|生物显微镜</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136073.html" target="_blank">测试 Linux 的可靠性</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136123.html" target="_blank">程序员向嵌入式系统工程师转型需注意的问题</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136114.html" target="_blank">jiffies溢出与时间先后比较</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136074.html" target="_blank">（老文更新)Fedora 9 下 emacs 22 的中文设置 </a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136119.html" target="_blank">Dynamic use of the domain name in 3322</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136071.html" target="_blank">i-doit 开源的itil管理软件，感觉做的不是很完善！</a></li>
+				  				</ul>
+		</div>
+		<div class="index_main_right1" style="margin-top:5px;">
+		     <div class="index_main_right1_top1">Linux技术文章热门文章</div>
+		        <ul style="background:#F3F4F6">
+				  				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2007114/84067.html" target="_blank">Fatal error: Call to undefined function mysql_connect()</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70606.html" target="_blank">查看LINUX最大线程数及最大进程数</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008720/133589.html" target="_blank">Request_irq参数dev_id的真正作用</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2007921/72462.html" target="_blank">ubuntu下mplayer  使用（3）－使用手册（中文）</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2007921/72498.html" target="_blank">linux fork()函数学习</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/20071027/80504.html" target="_blank">建立ARM平台上的交叉调试器gdb和gdbserver</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200868/123621.html" target="_blank">SPI设备的驱动</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200868/123718.html" target="_blank">Debian与Ubuntu英文环境下使用SCIM中文输入法</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/20090326/163546.html" target="_blank">secureCRT 显示乱码问题(总结)</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/20071027/80519.html" target="_blank">AIX系统维护大全</a></li>
+				  			    </ul>
+		</div>
+	  <div class="index_main_right2">
+		   <div class="index_main_right2_top">频道地图</div>
+		   <div class="index_main_right2_center">
+		      <div class="index_main_right2_center_list">
+			     <p><a href="/list/10601.shtml" target="_blank">Linux</a></p>
+				 <ul>
+				     				     <li><a href="/list/1060101.shtml" target="_blank">Linux系列教程</a></li>
+					 				     <li><a href="/list/1060102.shtml" target="_blank">Linux应用技巧</a></li>
+					 				     <li><a href="/list/1060103.shtml" target="_blank">Linux技术文章</a></li>
+					 				 </ul>
+			  </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10601.shtml" target="_blank">Linux</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10602.shtml" target="_blank">Windows xp</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10603.shtml" target="_blank">Windows 2003</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10604.shtml" target="_blank">Windows 2000/NT</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10605.shtml" target="_blank">DOS</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10606.shtml" target="_blank">Mac OS X</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10607.shtml" target="_blank">Vista</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10608.shtml" target="_blank">FreeBSD</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10609.shtml" target="_blank">Solaris</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10610.shtml" target="_blank">SCO UNIX</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10611.shtml" target="_blank">AIX</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10612.shtml" target="_blank">Windows 2008</a></p>
+			   </div>
+			  		   </div>
+		</div>
+   </div>
+	 </div>
+<div align="center" id="foot">
+	 <ul><li><a href="http://en.firnow.com/" rel="nofollow" target="_blank">English</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/about.htm" rel="nofollow" target="_blank">关于我们</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/jrfn.htm" rel="nofollow" target="_blank">诚聘英才</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/contact.htm" rel="nofollow" target="_blank">联系我们</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/fnls.htm" rel="nofollow" target="_blank">网站大事</a> | <a href="http://corp.firnow.com/link.htm" rel="nofollow" target="_blank">友情链接</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/ggfw.htm" rel="nofollow" target="_blank">广告服务</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/map.html" target="_blank">网站地图</a> </li></ul>
+<ul><li>Copyright&copy;2008-2010 <a href="http://www.firnow.com" target="_blank">飞诺网[FirNow.Com]</a> 版权所有 </li></ul>
+    <div id="foot_1"><dl><dt><img border="0" align="absmiddle" src="/images/2010/article/jyxwzbaxx.gif"> 
+<img width="44" height="42" border="0" align="absmiddle" src="/images/2010/article/wmlogo.gif"> 
+<img width="44" height="44" border="0" align="absmiddle" src="/images/2010/article/home_b.gif"> 
+<b><object width="48" height="56" border="0" align="absmiddle" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0">
+<param name="movie" value="http://image.yesky.com/TLimages/index/gangting.swf">
+<param name="quality" value="high">
+<embed width="54" height="62" align="absmiddle" src="http://image.yesky.com/TLimages/index/gangting.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"><param name="wmode" value="opaque"></object></b>
+</dt>
+  <dd><a href="http://www.firnow.com/" target="_blank">飞诺网</a> 鲁ICP备10012328号<br>
+    IT技术从现在起飞</dd><span class="discat"><a href="/list/1060103-055FBDB532A844EB.shtml">Linux技术文章</a></span></dl> 
+<div class="clear"></div>
+</div>
+</div>
+</div>
+<input id="ajaxUrl" type="hidden"  value="/Ajax/Comment.ashx"/>
+<input id="articleID" type="hidden"  value="136066"/>
+<input id="catalogID" type="hidden"  value="1060103"/>
+<div class="ad11"><script language="javascript" src="/ad/2010/article/ad11.js"></script></div>
+<script type="text/javascript" language="javascript" src="/js/2010/Article_bot.js"></script>
+</body>
+</html>

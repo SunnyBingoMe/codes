@@ -1,0 +1,78 @@
+1. 
+
+INTRODUCTION
+
+   SFTP is a simple file transfer protocol.  It fills the need of people
+   wanting a protocol that is more useful than TFTP but easier to
+   implement (and less powerful) than FTP.  SFTP supports user access
+   control, file transfers, directory listing, directory changing, file
+   renaming and deleting.
+
+   SFTP can be implemented with any reliable 8-bit byte stream oriented
+   protocol, this document describes its TCP specification.  SFTP uses
+   only one TCP connection; whereas TFTP implements a connection over
+   UDP, and FTP uses two TCP connections (one using the TELNET
+   protocol).
+
+THE PROTOCOL
+
+   SFTP is used by opening a TCP connection to the remote hosts' SFTP
+   port (115 decimal).  You then send SFTP commands and wait for
+   replies.  SFTP commands sent to the remote server are always 4 ASCII
+   letters (of any case) followed by a space, the argument(s), and a
+   <NULL>.  The argument can sometimes be null in which case the command
+   is just 4 characters followed by <NULL>.  Replies from the server are
+   always a response character followed immediately by an ASCII message
+   string terminated by a <NULL>.  A reply can also be just a response
+   character and a <NULL>.
+
+      <command> : = <cmd> [<SPACE> <args>] <NULL>
+
+      <cmd> : =  USER ! ACCT ! PASS ! TYPE ! LIST ! CDIR
+                 KILL ! NAME ! DONE ! RETR ! STOR
+
+      <response> : = <response-code> [<message>] <NULL>
+
+      <response-code> : =  + | - |   | !
+
+      <message> can contain <CRLF>
+
+   Commands that can be sent to the server are listed below.  The server
+   replies to each command with one of the possible response codes
+   listed under each message.  Along with the response, the server
+   should optionally return a message explaining the error in more
+   detail.  Example message texts are listed but do not have to be
+   followed.  All characters used in messages are ASCII 7-bit with the
+   high-order bit zero, in an 8 bit field.
+
+   The response codes and their meanings:
+
+      +  Success.
+
+      -  Error.
+
+         An error occurred while processing your command.
+
+         Number.
+
+         The number-sign is followed immediately by ASCII digits
+         representing a decimal number.
+
+      !  Logged in.
+
+         You have sent enough information to be able to log yourself in.
+         This is also used to mean you have sent enough information to
+         connect to a directory.
+
+   To use SFTP you first open a connection to the remote SFTP server.
+   The server replies by sending either a positive or negative greeting,
+   such as:
+
+      +MIT-XX SFTP Service
+
+         (the first word should be the host name)
+
+      -MIT-XX Out to Lunch
+
+   If the server send back a '-' response it will also close the
+   connection, otherwise you must now send a USER command.

@@ -6,16 +6,19 @@ ps: if apt-get install zend-framework-bin (1.10) , then default lib will be /usr
 ( ref: /usr/share/zend-framework  /usr/share/doc/libzend-framework-php) 
 Q: how could the apt-get...bin setup the lib path? (not php.ini , so it's ENV variables?) 
 
-
-apt-get install phpunit;
+apt-get install phpunit //this is for php-pear. may need to fix: /etc/apt/sources.list and 'apt-get update' before install unit.
 
 modify /etc/php5/cli/php.ini :
 include_path = ".:/etc/php5/zendFramework_1.11.10/library:/usr/share/php:/usr/share/php/PHPUnit"
 
+check:
+zf show version
+
 zf create project projectName
 
-The following is a sample VHOST you might want to consider for your project.
+apt-get install php5-sqlite
 
+The following is a sample VHOST you might want to consider for your project.
 	<VirtualHost *:80>
 		ServerName quickstart.local
 		DocumentRoot /mnt/hgfs/now/Dropbox/codes/zend_framework/quickstart/public
@@ -31,13 +34,15 @@ The following is a sample VHOST you might want to consider for your project.
 	</VirtualHost>
 
 
+now, u should be able to access the web.
+see /var/log/apache2/error.log for detail if get 500 error.
+e.g. ln -s mods-available/rewrite.load mods-enabled/
+
 default configuration is placed in application/configs/application.ini
 
 zf enable layout
 
 3 sentences about : zf configure db-adapter blala....
-
-apt-get install php5-sqlite
 
 Create the script as scripts/load.sqlite.php
 ! flesh out: scripts/load.sqlite.php

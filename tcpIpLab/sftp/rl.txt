@@ -1,0 +1,2 @@
+/media/NOW/ET2440_TCPIP/sftp/sftp/bin/Debug/sftp
+/media/NOW/ET2440_TCPIP/sftp/sftp_cl/bin/Debug/sftp_cl

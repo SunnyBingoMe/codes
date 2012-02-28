@@ -1,0 +1,375 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>File Locking</title>
+<link rel="stylesheet" href="bgipc.css" type="text/css">
+</head>
+
+<body bgcolor="#ffffff">
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="fifos.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><a href="mq.html">Next&nbsp;&gt;&gt;</a></td>
+</tr></table>
+
+
+<h2 class="sect1title">6. <a name="flocking">File Locking</a></h2><hr class="mainsecthr"/>
+
+
+<p>File locking provides a very simple yet incredibly useful mechanism
+for coordinating file accesses.  Before I begin to lay out the details,
+let me fill you in on some file locking secrets:</p>
+
+<p>There are two types of locking mechanisms: mandatory and advisory.
+Mandatory systems will actually prevent <b><tt class="func">read()</tt></b>s and
+<b><tt class="func">write()</tt></b>s to file.  Several Unix systems support them.
+Nevertheless, I'm going to ignore them throughout this document,
+preferring instead to talk solely about advisory locks.  With an
+advisory lock system, processes can still read and write from a file
+while it's locked.  Useless?  Not quite, since there is a way for a
+process to check for the existence of a lock before a read or write.
+See, it's a kind of <i>cooperative</i> locking system.  This is
+easily sufficient for almost all cases where file locking is
+necessary.</p>
+
+<p>Since that's out of the way, whenever I refer to a lock from now on
+in this document, I'm referring to advisory locks.  So there.</p>
+
+<p>Now, let me break down the concept of a lock a little bit more.
+There are two types of (advisory!) locks: read locks and write locks
+(also referred to as shared locks and exclusive locks, respectively.)
+The way read locks work is that they don't interfere with other read
+locks.  For instance, multiple processes can have a file locked for
+reading at the same.  However, when a process has an write lock on a
+file, no other process can activate either a read or write lock until it
+is relinquished.  One easy way to think of this is that there can be
+multiple readers simultaneously, but there can only be one writer at a
+time.</p>
+
+<p>One last thing before beginning: there are many ways to lock files in
+Unix systems.  System V likes <b><tt class="func">lockf()</tt></b>, which, personally, I
+think sucks.  Better systems support <b><tt class="func">flock()</tt></b> which offers
+better control over the lock, but still lacks in certain ways.  For
+portability and for completeness, I'll be talking about how to lock
+files using <b><tt class="func">fcntl()</tt></b>.  I encourage you, though, to use one
+of the higher-level <b><tt class="func">flock()</tt></b>-style functions if it suits
+your needs, but I want to portably demonstrate the full range of power
+you have at your fingertips.  (If your System V Unix doesn't support the
+POSIX-y <b><tt class="func">fcntl()</tt></b>, you'll have to reconcile the following
+information with your <b><tt class="func">lockf()</tt></b> man page.)</p>
+
+
+
+<h3 class="sect2title">6.1. <a name="flockset">Setting a lock</a></h3>
+
+
+<p>The <b><tt class="func">fcntl()</tt></b> function does just about everything on the
+planet, but we'll just use it for file locking.  Setting the lock
+consists of filling out a <nobr><nobr><tt class="type">struct flock</tt></nobr></nobr>
+(declared in <i><tt class="var">fcntl.h</tt></i>) that describes the type of lock
+needed, <b><tt class="func">open()</tt></b>ing the file with the matching mode, and
+calling <b><tt class="func">fcntl()</tt></b> with the proper arguments, <i>comme
+ça</i>:</p>
+
+<pre class="code">struct flock fl;
+int fd;
+    
+fl.l_type   = F_WRLCK;  /* F_RDLCK, F_WRLCK, F_UNLCK    */
+fl.l_whence = SEEK_SET; /* SEEK_SET, SEEK_CUR, SEEK_END */
+fl.l_start  = 0;        /* Offset from l_whence         */
+fl.l_len    = 0;        /* length, 0 = to EOF           */
+fl.l_pid    = getpid(); /* our PID                      */
+
+fd = open("filename", O_WRONLY);
+
+fcntl(fd, F_SETLKW, &amp;fl);  /* F_GETLK, F_SETLK, F_SETLKW */</pre>
+
+
+<p>What just happened?  Let's start with the <nobr><nobr><tt class="type">struct
+flock</tt></nobr></nobr> since the fields in it are used to
+<i>describe</i> the locking action taking place.  Here are some
+field definitions:</p>
+
+<center><table cellpadding="10" cellspacing="0" border="0" class="joetable">
+
+<tr><td valign="top" align="left" width="20%%"><i><tt class="var">l_type</tt></i></td>
+
+<td valign="top" align="left" width="80%%">This is where you signify the type of lock you want to set.  It's
+either <tt class="const">F_RDLCK</tt>, <tt class="const">F_WRLCK</tt>, or
+<tt class="const">F_UNLCK</tt> if you want to set a read lock, write lock, or
+clear the lock, respectively.</td>
+</tr>
+
+
+<tr><td valign="top" align="left"><i><tt class="var">l_whence</tt></i></td>
+
+<td valign="top" align="left">This field determines where the <i><tt class="var">l_start</tt></i> field starts from
+(it's like an offset for the offset).  It can be either
+<tt class="const">SEEK_SET</tt>, <tt class="const">SEEK_CUR</tt>, or
+<tt class="const">SEEK_END</tt>, for beginning of file, current file position,
+or end of file.</td>
+</tr>
+
+
+<tr><td valign="top" align="left"><i><tt class="var">l_start</tt></i></td>
+
+<td valign="top" align="left">This is the starting offset in bytes of the lock, relative to
+<i><tt class="var">l_whence</tt></i>.</td>
+</tr>
+
+
+<tr><td valign="top" align="left"><i><tt class="var">l_len</tt></i></td>
+
+<td valign="top" align="left">This is the length of the lock region in bytes (which starts from
+<i><tt class="var">l_start</tt></i> which is relative to <i><tt class="var">l_whence</tt></i>.</td>
+</tr>
+
+
+<tr><td valign="top" align="left"><i><tt class="var">l_pid</tt></i></td>
+
+<td valign="top" align="left">The process ID of the process dealing with the lock.  Use
+<b><tt class="func">getpid()</tt></b> to get this.</td>
+</tr>
+
+
+</table></center>
+
+
+<p>In our example, we told it make a lock of type <tt class="const">F_WRLCK</tt>
+(a write lock), starting relative to <tt class="const">SEEK_SET</tt> (the
+beginning of the file), offset <tt class="const">0</tt>, length <tt class="const">0</tt>
+(a zero value means "lock to end-of-file), with the PID set to
+<b><tt class="func">getpid()</tt></b>.</p>
+
+<p>The next step is to <b><tt class="func">open()</tt></b> the file, since
+<b><tt class="func">flock()</tt></b> needs a file descriptor of the file that's being
+locked.  Note that when you open the file, you need to open it in the
+same <i>mode</i> as you have specified in the lock, as shown in the
+table, below.  If you open the file in the wrong mode for a given lock
+type, <b><tt class="func">fcntl()</tt></b> will return <tt class="const">-1</tt> and
+<i><tt class="var">errno</tt></i> will be set to <tt class="const">EBADF</tt>.</p>
+
+<center><table cellpadding="10" cellspacing="0" border="0" class="joetable">
+
+<tr><td valign="top" align="left" width="30%%"><b><u><i><tt class="var">l_type</tt></i></u></b></td>
+<td valign="top" align="left" width="70%%"><b><u>mode</u></b></td>
+</tr>
+
+<tr><td valign="top" align="left"><tt class="const">F_RDLCK</tt></td>
+
+<td valign="top" align="left"><tt class="const">O_RDONLY</tt> or <tt class="const">O_RDWR</tt></td>
+</tr>
+
+
+<tr><td valign="top" align="left"><tt class="const">F_WRLCK</tt></td>
+
+<td valign="top" align="left"><tt class="const">O_WRONLY</tt> or <tt class="const">O_RDWR</tt></td>
+</tr>
+
+
+</table></center>
+
+
+
+<p>Finally, the call to <b><tt class="func">fcntl()</tt></b> actually sets, clears, or
+gets the lock.  See, the second argument (the <i><tt class="var">cmd</tt></i>) to
+<b><tt class="func">fcntl()</tt></b> tells it what to do with the data passed to it in
+the <nobr><nobr><tt class="type">struct flock</tt></nobr></nobr>.  The following list
+summarizes what each <b><tt class="func">fcntl()</tt></b> <i><tt class="var">cmd</tt></i> does:</p>
+
+<center><table cellpadding="10" cellspacing="0" border="0" class="joetable">
+
+<tr><td valign="top" align="left" width="15%%"><tt class="const">F_SETLKW</tt></td>
+
+<td valign="top" align="left" width="85%%">This argument tells <b><tt class="func">fcntl()</tt></b> to attempt to
+obtain the lock requested in the <nobr><nobr><tt class="type">struct flock</tt></nobr></nobr>
+structure.  If the lock cannot be obtained (since someone else has it
+locked already), <b><tt class="func">fcntl()</tt></b> will wait (block) until the lock
+has cleared, then will set it itself.  This is a very useful command.  I
+use it all the time.</td>
+</tr>
+
+
+<tr><td valign="top" align="left"><tt class="const">F_SETLK</tt></td>
+
+<td valign="top" align="left">This function is almost identical to <tt class="const">F_SETLKW</tt>.  The
+only difference is that this one will not wait if it cannot obtain a
+lock.  It will return immediately with <tt class="const">-1</tt>.  This function
+can be used to clear a lock by setting the <i><tt class="var">l_type</tt></i> field in
+the <nobr><nobr><tt class="type">struct flock</tt></nobr></nobr> to
+<tt class="const">F_UNLCK</tt>.</td>
+</tr>
+
+
+<tr><td valign="top" align="left"><tt class="const">F_GETLK</tt></td>
+
+<td valign="top" align="left">If you want to only check to see if there is a lock, but don't want
+to set one, you can use this command.  It looks through all the file
+locks until it finds one that conflicts with the lock you specified in
+the <nobr><nobr><tt class="type">struct flock</tt></nobr></nobr>.  It then copies the
+conflicting lock's information into the <nobr><tt class="type">struct</tt></nobr> and returns
+it to you.  If it can't find a conflicting lock, <b><tt class="func">fcntl()</tt></b>
+returns the <nobr><tt class="type">struct</tt></nobr> as you passed it, except it sets the
+<i><tt class="var">l_type</tt></i> field to <tt class="const">F_UNLCK</tt>.</td>
+</tr>
+
+
+</table></center>
+
+
+<p>In our above example, we call <b><tt class="func">fcntl()</tt></b> with
+<tt class="const">F_SETLKW</tt> as the argument, so it blocks until it can set
+the lock, then sets it and continues.</p>
+
+
+
+
+
+<h3 class="sect2title">6.2. <a name="flockclear">Clearing a lock</a></h3>
+
+
+<p>Whew!  After all the locking stuff up there, it's time for something
+easy: unlocking!  Actually, this is a piece of cake in comparison.  I'll
+just reuse that first example and add the code to unlock it at the
+end:</p>
+
+<pre class="code">
+struct flock fl;
+int fd;
+
+fl.l_type   = <b>F_WRLCK</b>;  /* F_RDLCK, F_WRLCK, F_UNLCK    */
+fl.l_whence = SEEK_SET; /* SEEK_SET, SEEK_CUR, SEEK_END */
+fl.l_start  = 0;        /* Offset from l_whence         */
+fl.l_len    = 0;        /* length, 0 = to EOF           */
+fl.l_pid    = getpid(); /* our PID                      */
+
+fd = open("filename", O_WRONLY);  /* get the file descriptor */
+fcntl(fd, F_SETLKW, &amp;fl);  /* set the lock, waiting if necessary */
+.
+.
+.
+fl.l_type   = F_UNLCK;  /* tell it to unlock the region */
+fcntl(fd, F_SETLK, &amp;fl); /* set the region to unlocked */</pre>
+
+
+<p>Now, I left the old locking code in there for high contrast, but you
+can tell that I just changed the <i><tt class="var">l_type</tt></i> field to
+<tt class="const">F_UNLCK</tt> (leaving the others completely unchanged!) and
+called <b><tt class="func">fcntl()</tt></b> with <tt class="const">F_SETLK</tt> as the command.
+Easy!</p>
+
+
+
+
+
+<h3 class="sect2title">6.3. <a name="flockdemo">A demo program</a></h3>
+
+
+<p>Here, I will include a demo program, <i><tt class="var">lockdemo.c</tt></i>, that
+waits for the user to hit return, then locks its own source, waits for
+another return, then unlocks it.  By running this program in two (or
+more) windows, you can see how programs interact while waiting for
+locks.</p>
+
+<p>Basically, usage is this: if you run <b class="com">lockdemo</b> with no
+command line arguments, it tries to grab a write lock
+(<tt class="const">F_WRLCK</tt>) on its source (<i><tt class="var">lockdemo.c</tt></i>).  If
+you start it with any command line arguments at all, it tries to get a
+read lock (<tt class="const">F_RDLCK</tt>) on it.</p>
+
+<p><a href="http://beej.us/guide/bgipc/examples/lockdemo.c" target="_blank">Here's the source</a>:</p>
+
+<pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(int argc, char *argv[])
+{
+                    /* l_type   l_whence  l_start  l_len  l_pid   */
+    struct flock fl = {F_WRLCK, SEEK_SET,   0,      0,     0 };
+    int fd;
+
+    fl.l_pid = getpid();
+
+    if (argc &gt; 1) 
+        fl.l_type = F_RDLCK;
+
+    if ((fd = open("lockdemo.c", O_RDWR)) == -1) {
+        perror("open");
+        exit(1);
+    }
+
+    printf("Press &lt;RETURN&gt; to try to get lock: ");
+    getchar();
+    printf("Trying to get lock...");
+
+    if (fcntl(fd, F_SETLKW, &amp;fl) == -1) {
+        perror("fcntl");
+        exit(1);
+    }
+
+    printf("got lock\n");
+    printf("Press &lt;RETURN&gt; to release lock: ");
+    getchar();
+
+    fl.l_type = F_UNLCK;  /* set to unlock same region */
+
+    if (fcntl(fd, F_SETLK, &amp;fl) == -1) {
+        perror("fcntl");
+        exit(1);
+    }
+
+    printf("Unlocked.\n");
+
+    close(fd);
+
+    return 0;
+}</pre>
+
+
+<p>Compile that puppy up and start messing with it in a couple windows.
+Notice that when one <b class="com">lockdemo</b> has a read lock, other
+instances of the program can get their own read locks with no problem.
+It's only when a write lock is obtained that other processes can't get a
+lock of any kind.</p>
+
+<p>Another thing to notice is that you can't get a write lock if there
+are any read locks on the same region of the file.  The process waiting
+to get the write lock will wait until all the read locks are cleared.
+One upshot of this is that you can keep piling on read locks (because a
+read lock doesn't stop other processes from getting read locks) and any
+processes waiting for a write lock will sit there and starve.  There
+isn't a rule anywhere that keeps you from adding more read locks if
+there is a process waiting for a write lock.  You must be careful.</p>
+
+<p>Practically, though, you will probably mostly be using write locks to
+guarantee exclusive access to a file for a short amount of time while
+it's being updated; that is the most common use of locks as far as I've
+seen.  And I've seen them all...well, I've seen one...a small one...a
+picture—well, I've heard about them.</p>
+
+
+
+
+
+<h3 class="sect2title">6.4. <a name="flocksum">Summary</a></h3>
+
+
+<p>Locks rule.  Sometimes, though, you might need more control over your
+processes in a producer-consumer situation.  For this reason, if no
+other, you should see the document on System V <a href="semaphores.html">semaphores</a> if your system supports such a
+beast.  They provide a more extensive and at least equally function
+equivalent to file locks.</p>
+
+
+
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="fifos.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><a href="mq.html">Next&nbsp;&gt;&gt;</a></td>
+</tr></table>
+
+</body>
+</html>

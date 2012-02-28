@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1289161348 source:/media/now/0_tcpproj/tftp/tftp/main.c
+	<arpa/inet.h>
+	<errno.h>
+	<fcntl.h>
+	<limits.h>
+	<memory.h>
+	<netdb.h>
+	<netinet/in.h>
+	<pthread.h>
+	<signal.h>
+	<stdio.h>
+	<stdlib.h>
+	<sys/ioctl.h>
+	<sys/socket.h>
+	<sys/stat.h>
+	<sys/time.h>
+	<sys/types.h>
+	<time.h>
+	<unistd.h>
+
+1288994912 /media/now/0_tcpproj/tftp/tftp/tftp.h
+

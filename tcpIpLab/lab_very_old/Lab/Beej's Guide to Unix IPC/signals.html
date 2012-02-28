@@ -1,0 +1,587 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Signals</title>
+<link rel="stylesheet" href="bgipc.css" type="text/css">
+</head>
+
+<body bgcolor="#ffffff">
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="fork.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><a href="pipes.html">Next&nbsp;&gt;&gt;</a></td>
+</tr></table>
+
+
+<h2 class="sect1title">3. <a name="signals">Signals</a></h2><hr class="mainsecthr"/>
+
+
+<p>There is a sometimes useful method for one process to bug another:
+signals.  Basically, one process can "raise" a signal and have it
+delivered to another process.  The destination process's signal handler
+(just a function) is invoked and the process can handle it.</p>
+
+<p>The devil's in the details, of course, and in actuality what you are
+permitted to do safely inside your signal hander is rather limited.
+Nevertheless, signals provide a useful service.</p>
+
+<p>For example, one process might want to stop another one, and this
+can be done by sending the signal <tt class="const">SIGSTOP</tt> to that
+process.  To continue, the process has to receive signal
+<tt class="const">SIGCONT</tt>.  How does the process know to do this when it
+receives a certain signal?  Well, many signals are predefined and the
+process has a default signal handler to deal with it.</p>
+
+<p>A default handler?  Yes.  Take <tt class="const">SIGINT</tt> for example.
+This is the interrupt signal that a process receives when the user hits
+<tt class="tt">^C</tt>.  The default signal handler for <tt class="const">SIGINT</tt>
+causes the process to exit!  Sound familiar?  Well, as you can imagine,
+you can override the <tt class="const">SIGINT</tt> to do whatever you want (or
+nothing at all!)  You could have your process <b><tt class="func">printf()</tt></b>
+"Interrupt?!  No way, Jose!" and go about its merry business.</p>
+
+<p>So now you know that you can have your process respond to just about
+any signal in just about any way you want.  Naturally, there are
+exceptions because otherwise it would be too easy to understand.  Take
+the ever popular <tt class="const">SIGKILL</tt>, signal #9.  Have you ever typed
+<nobr>"<b class="com">kill -9 <i>nnnn</i></b>"</nobr> to kill a runaway
+process?  You were sending it <tt class="const">SIGKILL</tt>.  Now you might
+also remember that no process can get out of a <nobr>"<b class="com">kill
+-9</b>",</nobr> and you would be correct.  <tt class="const">SIGKILL</tt> is
+one of the signals you <b class="com">can't</b> add your own signal handler for.
+The aforementioned <tt class="const">SIGSTOP</tt> is also in this category.</p>
+
+<p>(Aside: you often use the Unix "<b class="com">kill</b>" command without
+specifying a signal to send...so what signal is it?  The answer:
+<tt class="const">SIGTERM</tt>.  You can write your own handler for
+<tt class="const">SIGTERM</tt> so your process won't respond to a regular
+"<b class="com">kill</b>", and the user must then use "<b class="com">kill -9</b>" to
+destroy the process.)</p>
+
+<p>Are all the signals predefined?  What if you want to send a signal
+that has significance that only you understand to a process?  There are
+two signals that aren't reserved: <tt class="const">SIGUSR1</tt> and
+<tt class="const">SIGUSER2</tt>.  You are free to use these for whatever you
+want and handle them in whatever way you choose.  (For example, my cd
+player program might respond to <tt class="const">SIGUSR1</tt> by advancing to
+the next track.  In this way, I could control it from the command line
+by typing <nobr>"<b class="com">kill -SIGUSR1 <i><tt class="var">nnnn</tt></i></b>".)</nobr></p>
+
+
+
+
+<h3 class="sect2title">3.1. <a name="catchsig">Catching Signals for Fun and Profit!</a></h3>
+
+
+<p>As you can guess the Unix "kill" command is one way to send signals
+to a process.  By sheer unbelievable coincidence, there is a system call
+called <b><tt class="func">kill()</tt></b> which does the same thing.  It takes for its
+argument a signal number (as defined in <i><tt class="var">signal.h</tt></i>) and a
+process ID.  Also, there is a library routine called
+<b><tt class="func">raise()</tt></b> which can be used to raise a signal within the same
+process.</p>
+
+<p>The burning question remains: how do you catch a speeding
+<tt class="const">SIGTERM</tt>?  You need to call <b><tt class="func">sigaction()</tt></b> and
+tell it all the gritty details about which signal you want to catch and
+which function you want to call to handle it.</p>
+
+<p>Here's the <b><tt class="func">sigaction()</tt></b> breakdown:</p>
+
+<pre class="code">int sigaction(int <i><tt class="var em1">sig</tt></i>, const struct sigaction *<i><tt class="var em1">act</tt></i>,
+              struct sigaction *<i><tt class="var em1">oact</tt></i>);</pre>
+
+
+<p>The first parameter, <i><tt class="var">sig</tt></i> is which signal to catch.
+This can be (probably "should" be) a symbolic name from
+<i><tt class="var">signal.h</tt></i> along the lines of <tt class="const">SIGINT</tt>.  That's
+the easy bit.</p>
+
+<p>The next field, <i><tt class="var">act</tt></i> is a pointer to a <nobr><tt class="type">struct
+sigaction</tt></nobr> which has a bunch of fields that you can fill in to
+control the behavior of the signal handler.  (A pointer to the signal
+handler function itself included in the <nobr><tt class="type">struct</tt></nobr>.)</p>
+
+<p>Lastly <i><tt class="var">oact</tt></i> can be <tt class="const">NULL</tt>, but if not, it
+returns the <i>old</i> signal handler information that was in place
+before. This is useful if you want to restore the previous signal
+handler at a later time.</p>
+
+<p>We'll focus on these three fields in the <nobr><tt class="type">struct
+sigaction</tt></nobr>:</p>
+
+<center><table cellpadding="10" cellspacing="0" border="0" class="joetable">
+
+<tr><td valign="top" align="left" width="25%%"><b><u>Signal</u></b></td>
+<td valign="top" align="left" width="70%%"><b><u>Description</u></b></td>
+</tr>
+
+<tr><td valign="top" align="left"><nobr><tt class="type">sa_handler</tt></nobr></td>
+<td valign="top" align="left">The signal handler function (or <tt class="const">SIG_IGN</tt> to ignore the signal)</td>
+</tr>
+
+<tr><td valign="top" align="left"><nobr><tt class="type">sa_mask</tt></nobr></td>
+<td valign="top" align="left">A set of signals to block while this one is being handled</td>
+</tr>
+
+<tr><td valign="top" align="left"><nobr><tt class="type">sa_flags</tt></nobr></td>
+<td valign="top" align="left">Flags to modify the behavior of the handler, or <tt class="const">0</tt></td>
+</tr>
+
+</table></center>
+
+
+<p>What about that <nobr><tt class="type">sa_mask</tt></nobr> field?  When you're handling a
+signal, you might want to block other signals from being delivered, and
+you can do this by adding them to the <nobr><tt class="type">sa_mask</tt></nobr>
+It's a "set", which means you can do normal set operations to manipulate
+them: <b><tt class="func">sigemptyset()</tt></b>, <b><tt class="func">sigfillset()</tt></b>,
+<b><tt class="func">sigaddset()</tt></b>, <b><tt class="func">sigdelset()</tt></b>, and
+<b><tt class="func">sigismember()</tt></b>.  In this example, we'll just clear the set
+and not block any other signals.</p>
+
+<p>Examples always help!  Here's one that handled <tt class="const">SIGINT</tt>,
+which can be delivered by hitting <tt class="tt">^C</tt>, called <i><tt class="var"><a href="http://beej.us/guide/bgipc/examples/sigint.c" target="_blank">sigint.c</a></tt></i>:</p>
+
+<pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;signal.h&gt;
+
+void sigint_handler(int sig)
+{
+    write(0, "Ahhh! SIGINT!\n", 14);
+}
+
+int main(void)
+{
+    void sigint_handler(int sig); /* prototype */
+    char s[200];
+    struct sigaction sa;
+
+    sa.sa_handler = sigint_handler;
+    sa.sa_flags = 0; // or SA_RESTART
+    sigemptyset(&amp;sa.sa_mask);
+
+    if (sigaction(SIGINT, &amp;sa, NULL) == -1) {
+        perror("sigaction");
+        exit(1);
+    }
+
+    printf("Enter a string:\n");
+
+    if (fgets(s, sizeof s, stdin) == NULL)
+        perror("fgets");
+    else 
+        printf("You entered: %s\n", s);
+
+    return 0;
+}</pre>
+
+
+<p>This program has two functions: <b><tt class="func">main()</tt></b> which sets up the
+signal handler (using the <b><tt class="func">sigaction()</tt></b> call), and
+<b><tt class="func">sigint_handler()</tt></b> which is the signal handler, itself.</p>
+
+<p>What happens when you run it?  If you are in the midst of entering a
+string and you hit <tt class="tt">^C</tt>, the call to <b><tt class="func">gets()</tt></b> fails
+and sets the global variable <i><tt class="var">errno</tt></i> to <tt class="const">EINTR</tt>.
+Additionally, <b><tt class="func">sigint_handler()</tt></b> is called and does its
+routine, so you actually see:</p>
+
+<pre class="screen">Enter a string:
+<b>the quick brown fox jum^C</b>Ahhh! SIGINT!
+fgets: Interrupted system call</pre>
+
+
+<p>And then it exits.  Hey—what kind of handler is this, if it
+just exits anyway?</p>
+
+<p>Well, we have a couple things at play, here. First, you'll notice
+that the signal handler was called, because it printed "Ahhh! SIGINT!"
+But then <b><tt class="func">fgets()</tt></b> returns an error, namely
+<tt class="const">EINTR</tt>, or "Interrupted system call".  See, some system
+calls can be interrupted by signals, and when this happens, they return
+an error.  You might see code like this (sometimes cited as an excusable
+use of <tt class="tt">goto</tt>):</p>
+
+<pre class="code">
+restart:
+    if (some_system_call() == -1) {
+        if (errno == EINTR) goto restart;
+        perror("some_system_call");
+        exit(1);
+    }</pre>
+
+
+<p>Instead of using <tt class="tt">goto</tt> like that, you might be able to set
+your <nobr><tt class="type">sa_flags</tt></nobr> to include <tt class="const">SA_RESTART</tt>.  For
+example, if we change our <tt class="const">SIGINT</tt> handler code to look
+like this:</p>
+
+<pre class="code">    sa.sa_flags = SA_RESTART;</pre>
+
+
+<p>Then our run looks more like this:</p>
+
+<pre class="screen">Enter a string:
+<b>Hello^C</b>Ahhh! SIGINT!
+<b>Er, hello!^C</b>Ahhh! SIGINT!
+<b>This time fer sure!</b>
+You entered: This time fer sure!</pre>
+
+
+<p>Some system calls are interruptible, and some can be restarted.  It's
+system dependent.</p>
+
+
+
+
+
+<h3 class="sect2title">3.2. <a name="handlerok">The Handler is not Omnipotent</a></h3>
+
+
+<p>You have to be careful when you make function calls in your signal
+handler. Those functions must be "async safe", so they can be called
+without invoking undefined behavior.</p>
+
+<p>You might be curious, for instance, why my signal handler, above,
+called <b><tt class="func">write()</tt></b> to output the message instead of
+<b><tt class="func">printf()</tt></b>. Well, the answer is that POSIX says that
+<b><tt class="func">write()</tt></b> is async-safe (so is safe to call from within the
+handler), while <b><tt class="func">printf()</tt></b> is not.</p>
+
+<p>The library functions and system calls that are async-safe and can be
+called from within your signal handlers are (breath):</p>
+
+<p><b><tt class="func">_Exit()</tt></b>, <b><tt class="func">_exit()</tt></b>, <b><tt class="func">abort()</tt></b>,
+<b><tt class="func">accept()</tt></b>, <b><tt class="func">access()</tt></b>, <b><tt class="func">aio_error()</tt></b>,
+<b><tt class="func">aio_return()</tt></b>, <b><tt class="func">aio_suspend()</tt></b>,
+<b><tt class="func">alarm()</tt></b>, <b><tt class="func">bind()</tt></b>, <b><tt class="func">cfgetispeed()</tt></b>,
+<b><tt class="func">cfgetospeed()</tt></b>, <b><tt class="func">cfsetispeed()</tt></b>,
+<b><tt class="func">cfsetospeed()</tt></b>, <b><tt class="func">chdir()</tt></b>, <b><tt class="func">chmod()</tt></b>,
+<b><tt class="func">chown()</tt></b>, <b><tt class="func">clock_gettime()</tt></b>,
+<b><tt class="func">close()</tt></b>, <b><tt class="func">connect()</tt></b>, <b><tt class="func">creat()</tt></b>,
+<b><tt class="func">dup()</tt></b>, <b><tt class="func">dup2()</tt></b>, <b><tt class="func">execle()</tt></b>,
+<b><tt class="func">execve()</tt></b>, <b><tt class="func">fchmod()</tt></b>, <b><tt class="func">fchown()</tt></b>,
+<b><tt class="func">fcntl()</tt></b>, <b><tt class="func">fdatasync()</tt></b>, <b><tt class="func">fork()</tt></b>,
+<b><tt class="func">fpathconf()</tt></b>, <b><tt class="func">fstat()</tt></b>, <b><tt class="func">fsync()</tt></b>,
+<b><tt class="func">ftruncate()</tt></b>, <b><tt class="func">getegid()</tt></b>,
+<b><tt class="func">geteuid()</tt></b>, <b><tt class="func">getgid()</tt></b>, <b><tt class="func">getgroups()</tt></b>,
+<b><tt class="func">getpeername()</tt></b>, <b><tt class="func">getpgrp()</tt></b>,
+<b><tt class="func">getpid()</tt></b>, <b><tt class="func">getppid()</tt></b>,
+<b><tt class="func">getsockname()</tt></b>, <b><tt class="func">getsockopt()</tt></b>,
+<b><tt class="func">getuid()</tt></b>, <b><tt class="func">kill()</tt></b>, <b><tt class="func">link()</tt></b>,
+<b><tt class="func">listen()</tt></b>, <b><tt class="func">lseek()</tt></b>, <b><tt class="func">lstat()</tt></b>,
+<b><tt class="func">mkdir()</tt></b>, <b><tt class="func">mkfifo()</tt></b>, <b><tt class="func">open()</tt></b>,
+<b><tt class="func">pathconf()</tt></b>, <b><tt class="func">pause()</tt></b>, <b><tt class="func">pipe()</tt></b>,
+<b><tt class="func">poll()</tt></b>, <b><tt class="func">posix_trace_event()</tt></b>,
+<b><tt class="func">pselect()</tt></b>, <b><tt class="func">raise()</tt></b>, <b><tt class="func">read()</tt></b>,
+<b><tt class="func">readlink()</tt></b>, <b><tt class="func">recv()</tt></b>, <b><tt class="func">recvfrom()</tt></b>,
+<b><tt class="func">recvmsg()</tt></b>, <b><tt class="func">rename()</tt></b>, <b><tt class="func">rmdir()</tt></b>,
+<b><tt class="func">select()</tt></b>, <b><tt class="func">sem_post()</tt></b>, <b><tt class="func">send()</tt></b>,
+<b><tt class="func">sendmsg()</tt></b>, <b><tt class="func">sendto()</tt></b>, <b><tt class="func">setgid()</tt></b>,
+<b><tt class="func">setpgid()</tt></b>, <b><tt class="func">setsid()</tt></b>,
+<b><tt class="func">setsockopt()</tt></b>, <b><tt class="func">setuid()</tt></b>,
+<b><tt class="func">shutdown()</tt></b>, <b><tt class="func">sigaction()</tt></b>,
+<b><tt class="func">sigaddset()</tt></b>, <b><tt class="func">sigdelset()</tt></b>,
+<b><tt class="func">sigemptyset()</tt></b>, <b><tt class="func">sigfillset()</tt></b>,
+<b><tt class="func">sigismember()</tt></b>, <b><tt class="func">sleep()</tt></b>, <b><tt class="func">signal()</tt></b>,
+<b><tt class="func">sigpause()</tt></b>, <b><tt class="func">sigpending()</tt></b>,
+<b><tt class="func">sigprocmask()</tt></b>, <b><tt class="func">sigqueue()</tt></b>,
+<b><tt class="func">sigset()</tt></b>, <b><tt class="func">sigsuspend()</tt></b>,
+<b><tt class="func">sockatmark()</tt></b>, <b><tt class="func">socket()</tt></b>,
+<b><tt class="func">socketpair()</tt></b>, <b><tt class="func">stat()</tt></b>, <b><tt class="func">symlink()</tt></b>,
+<b><tt class="func">sysconf()</tt></b>, <b><tt class="func">tcdrain()</tt></b>, <b><tt class="func">tcflow()</tt></b>,
+<b><tt class="func">tcflush()</tt></b>, <b><tt class="func">tcgetattr()</tt></b>,
+<b><tt class="func">tcgetpgrp()</tt></b>, <b><tt class="func">tcsendbreak()</tt></b>,
+<b><tt class="func">tcsetattr()</tt></b>, <b><tt class="func">tcsetpgrp()</tt></b>, <b><tt class="func">time()</tt></b>,
+<b><tt class="func">timer_getoverrun()</tt></b>, <b><tt class="func">timer_gettime()</tt></b>,
+<b><tt class="func">timer_settime()</tt></b>, <b><tt class="func">times()</tt></b>,
+<b><tt class="func">umask()</tt></b>, <b><tt class="func">uname()</tt></b>, <b><tt class="func">unlink()</tt></b>,
+<b><tt class="func">utime()</tt></b>, <b><tt class="func">wait()</tt></b>, <b><tt class="func">waitpid()</tt></b>, and
+<b><tt class="func">write()</tt></b>.</p>
+
+<p>Of course, you can call your own functions from within your signal
+handler (as long they don't call any non-async-safe functions.)</p>
+
+<p>But wait—there's more!</p>
+
+<p>You also cannot safely alter any shared (e.g. global) data, with one
+notable exception: variables that are declared to be of storage class
+and type <nobr><tt class="type">volatile sig_atomic_t</tt></nobr>.</p>
+
+<p>Here's an example that handles <tt class="const">SIGUSR1</tt> by setting a
+global flag, which is then examined in the main loop to see if the
+handler was called.  This is <i><tt class="var"><a href="http://beej.us/guide/bgipc/examples/sigusr.c" target="_blank">sigusr.c</a></tt></i>:</p>
+
+<pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;signal.h&gt;
+
+volatile sig_atomic_t got_usr1;
+
+void sigusr1_handler(int sig)
+{
+    got_usr1 = 1;
+}
+
+int main(void)
+{
+    struct sigaction sa;
+
+    got_usr1 = 0;
+
+    sa.sa_handler = sigusr1_handler;
+    sa.sa_flags = 0;
+    sigemptyset(&amp;sa.sa_mask);
+
+    if (sigaction(SIGUSR1, &amp;sa, NULL) == -1) {
+        perror("sigaction");
+        exit(1);
+    }
+
+    while (!got_usr1) {
+        printf("PID %d: working hard...\n", getpid());
+        sleep(1);
+    }
+
+    printf("Done in by SIGUSR1!\n");
+
+    return 0;
+}</pre>
+
+
+<p>Fire it it up in one window, and then use the <b class="com">kill -USR1</b> in
+another window to kill it.  The <i><tt class="var">sigusr</tt></i> program
+conveniently prints out its process ID so you can pass it to
+<b class="com">kill</b>:</p>
+
+<pre class="screen">$ <b>sigusr</b>
+PID 5023: working hard...
+PID 5023: working hard...
+PID 5023: working hard...</pre>
+
+
+<p>Then in the other window, send it the signal
+<tt class="const">SIGUSR1</tt>:</p>
+
+<pre class="screen">$ <b>kill -USR1 5023</b></pre>
+
+
+<p>And the program should respond:</p>
+
+<pre class="screen">PID 5023: working hard...
+PID 5023: working hard...
+Done in by SIGUSR1!</pre>
+
+
+<p>(And the response should be immediate even if <b><tt class="func">sleep()</tt></b>
+has just been called—<b><tt class="func">sleep()</tt></b> gets interrupted by
+signals.)</p>
+
+ 
+
+
+
+
+<h3 class="sect2title">3.3. <a name="signalwrong">What about <b><tt class="titlefunc">signal()</tt></b></a></h3>
+
+
+<p>ANSI-C defines a function called <b><tt class="func">signal()</tt></b> that can be used to
+catch signals.  It's not as reliable or as full-featured as
+<b><tt class="func">sigaction()</tt></b>, so use of <b><tt class="func">signal()</tt></b>is generally
+discouraged.</p>
+
+
+
+
+
+
+<h3 class="sect2title">3.4. <a name="signalpop">Some signals to make you popular</a></h3>
+
+
+<p>Here is a list of signals you (most likely) have at your
+disposal:</p>
+
+<center><table cellpadding="10" cellspacing="0" border="0" class="joetable">
+
+<tr><td valign="top" align="left" width="30%%"><b><u>Signal</u></b></td>
+<td valign="top" align="left" width="70%%"><b><u>Description</u></b></td>
+</tr>
+
+<tr><td valign="top" align="left">SIGABRT</td>
+<td valign="top" align="left">Process abort signal.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGALRM</td>
+<td valign="top" align="left">Alarm clock.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGFPE</td>
+<td valign="top" align="left">Erroneous arithmetic operation.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGHUP</td>
+<td valign="top" align="left">Hangup.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGILL</td>
+<td valign="top" align="left">Illegal instruction.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGINT</td>
+<td valign="top" align="left">Terminal interrupt signal.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGKILL</td>
+<td valign="top" align="left">Kill (cannot be caught or ignored).</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGPIPE</td>
+<td valign="top" align="left">Write on a pipe with no one to read it.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGQUIT</td>
+<td valign="top" align="left">Terminal quit signal.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGSEGV</td>
+<td valign="top" align="left">Invalid memory reference.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGTERM</td>
+<td valign="top" align="left">Termination signal.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGUSR1</td>
+<td valign="top" align="left">User-defined signal 1.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGUSR2</td>
+<td valign="top" align="left">User-defined signal 2.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGCHLD</td>
+<td valign="top" align="left">Child process terminated or stopped.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGCONT</td>
+<td valign="top" align="left">Continue executing, if stopped.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGSTOP</td>
+<td valign="top" align="left">Stop executing (cannot be caught or ignored).</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGTSTP</td>
+<td valign="top" align="left">Terminal stop signal.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGTTIN</td>
+<td valign="top" align="left">Background process attempting read.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGTTOU</td>
+<td valign="top" align="left">Background process attempting write.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGBUS</td>
+<td valign="top" align="left">Bus error.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGPOLL</td>
+<td valign="top" align="left">Pollable event.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGPROF</td>
+<td valign="top" align="left">Profiling timer expired.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGSYS</td>
+<td valign="top" align="left">Bad system call.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGTRAP</td>
+<td valign="top" align="left">Trace/breakpoint trap.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGURG</td>
+<td valign="top" align="left">High bandwidth data is available at a socket.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGVTALRM</td>
+<td valign="top" align="left">Virtual timer expired.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGXCPU</td>
+<td valign="top" align="left">CPU time limit exceeded.</td>
+</tr>
+
+<tr><td valign="top" align="left">SIGXFSZ</td>
+<td valign="top" align="left">File size limit exceeded.</td>
+</tr>
+
+</table></center>
+
+
+<p>Each signal has its own default signal handler, the behavior of which
+is defined in your local man pages.</p>
+
+
+
+
+
+
+<h3 class="sect2title">3.5. <a name="siggloss">What I have Glossed Over</a></h3>
+
+
+<p>Nearly all of it.  There are tons of flags, realtime signals, mixing
+signals with threads, masking signals, <b><tt class="func">longjmp()</tt></b> and
+signals, and more.</p>
+
+<p>Of course, this is just a "getting started" guide, but in a last-ditch
+effort to give you more information, here is a list of man pages with more
+information:</p>
+
+<p>Handling signals:
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigaction.html" target="_blank"><b><tt class="func">sigaction()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigwait.html" target="_blank"><b><tt class="func">sigwait()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigwaitinfo.html" target="_blank"><b><tt class="func">sigwaitinfo()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigtimedwait.html" target="_blank"><b><tt class="func">sigtimedwait()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigsuspend.html" target="_blank"><b><tt class="func">sigsuspend()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigpending.html" target="_blank"><b><tt class="func">sigpending()</tt></b></a></p>
+
+<p>Delivering signals:
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/kill.html" target="_blank"><b><tt class="func">kill()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/raise.html" target="_blank"><b><tt class="func">raise()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigqueue.html" target="_blank"><b><tt class="func">sigqueue()</tt></b></a></p>
+
+<p>Set operations:
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigemptyset.html" target="_blank"><b><tt class="func">sigemptyset()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigfillset.html" target="_blank"><b><tt class="func">sigfillset()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigaddset.html" target="_blank"><b><tt class="func">sigaddset()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigdelset.html" target="_blank"><b><tt class="func">sigdelset()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigismember.html" target="_blank"><b><tt class="func">sigismember()</tt></b></a></p>
+
+<p>Other:
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigprocmask.html" target="_blank"><b><tt class="func">sigprocmask()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigaltstack.html" target="_blank"><b><tt class="func">sigaltstack()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/siginterrupt.html" target="_blank"><b><tt class="func">siginterrupt()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/sigsetjmp.html" target="_blank"><b><tt class="func">sigsetjmp()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/siglongjmp.html" target="_blank"><b><tt class="func">siglongjmp()</tt></b></a>
+<a href="http://www.opengroup.org/onlinepubs/007908775/xsh/signal.html" target="_blank"><b><tt class="func">signal()</tt></b></a></p>
+
+
+
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="fork.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><a href="pipes.html">Next&nbsp;&gt;&gt;</a></td>
+</tr></table>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-5.1.dtd">
+<!-- eric5 project file for project practice_py -->
+<!-- Saved: 2012-02-11, 18:32:06 -->
+<!-- Copyright (C) 2012 ,  -->
+<Project version="5.1">
+  <Language></Language>
+  <Hash>84cf6515f58a812d43384622f126644336815187</Hash>
+  <ProgLanguage mixed="0">Python2</ProgLanguage>
+  <ProjectType>Qt4</ProjectType>
+  <Description></Description>
+  <Version>0.1</Version>
+  <Author></Author>
+  <Email></Email>
+  <Sources>
+    <Source>hello.py</Source>
+    <Source>__init__.py</Source>
+    <Source>rapidGui/1.1.py</Source>
+    <Source>rapidGui/1.2.py</Source>
+    <Source>rapidGui/1.3.py</Source>
+    <Source>learning/1.py</Source>
+    <Source>learning/2.py</Source>
+    <Source>beginning_py3/test.py</Source>
+  </Sources>
+  <Forms/>
+  <Translations/>
+  <Resources/>
+  <Interfaces/>
+  <Others/>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.ui" type="FORMS"/>
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES"/>
+    <FiletypeAssociation pattern="*.qm" type="TRANSLATIONS"/>
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.ui.h" type="FORMS"/>
+    <FiletypeAssociation pattern="*.ts" type="TRANSLATIONS"/>
+    <FiletypeAssociation pattern="*.py" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.qrc" type="RESOURCES"/>
+  </FiletypeAssociations>
+</Project>

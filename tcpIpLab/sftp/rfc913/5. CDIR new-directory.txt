@@ -1,0 +1,33 @@
+
+     5. CDIR new-directory
+
+         This will change the current working directory on the remote
+         host to the argument passed.
+
+         Replies are:
+
+            !Changed working dir to <new-directory>
+
+            -Can't connect to directory because: (reason)
+
+            +directory ok, send account/password
+
+         If the server replies with '+' you should then send an ACCT or
+         PASS command.  The server will wait for ACCT or PASS commands
+         until it returns a '-' or '!' response.
+
+            Replies to ACCT could be:
+
+               !Changed working dir to <new-directory>
+
+               +account ok, send password
+
+               -invalid account
+
+            Replies to PASS could be:
+
+               !Changed working dir to <new-directory>
+
+               +password ok, send account
+
+               -invalid password

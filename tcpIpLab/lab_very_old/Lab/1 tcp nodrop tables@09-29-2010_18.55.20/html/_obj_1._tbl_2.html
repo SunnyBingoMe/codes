@@ -1,0 +1,865 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript" SRC="../support/javascript_support.js"></SCRIPT>
+</head>
+<body>
+<link rel="stylesheet" type="text/css" href="table_stylesheet.css">
+<table class="table_title">
+<tr align="center" valign="middle">
+<td class="td_title"><b>
+							Category:
+							&nbsp;&nbsp;</b></td><td class="td_title">Packet Statistics</td>
+</tr>
+<tr>
+<td class="td_title"><b>
+							Report:
+							&nbsp;&nbsp;</b></td><td class="td_title">Number of Packets Created</td>
+</tr>
+</table>
+<table class="table_button">
+<tr align="left" valign="buttom">
+<td class="td_button"><a href="#" NAME="anchor" ID="anchor" onClick="TableEditor('anchor', tb);return false;" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image1','','../support/button_b.gif',1)"><img name="Image1" border="0" src="../support/button_a.gif" width="13" height="13"></a></td><td class="td_button">
+				Table Properties
+			</td>
+</tr>
+<tr align="left" valign="middle">
+<td class="td_button">&nbsp;</td>
+</tr>
+</table>
+<SCRIPT LANGUAGE="JavaScript">
+
+		var tb = new SortTable("tb");
+		var g_sort_type = 0;
+		var g_threshold = 0;
+		var message_string = "";
+
+		
+		tb.AddColumn("Line#","","left","");
+
+		
+			tb.AddColumn("Module Name","","left","");
+		
+			tb.AddColumn("[Total]","","left","");
+		
+			tb.AddColumn("ethernet_v2","","left","");
+		
+			tb.AddColumn("gna","","left","");
+		
+			tb.AddColumn("ip_dgram_v4","","left","");
+		
+			tb.AddColumn("rip_message2","","left","");
+		
+			tb.AddColumn("tcp_seg_v2","","left","");
+		
+			tb.AddColumn("udp_dgram_v2","","left","");
+		
+			tb.AddColumn("[Unformatted]","","left","");
+		
+			tb.AddColumn("[SAR Segments]","","left","");
+		
+			tb.AddColumn(" ","","left","");
+		
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("1",
+				"1","no", "");
+
+			
+
+						tb.AddElement ("application", "application","no", "", "yes");
+
+					
+
+						tb.AddElement ("9008", "9008","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("8", "8","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("9000", "9000","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("even");
+				
+
+			tb.AddElement ("2",
+				"2","no", "");
+
+			
+
+						tb.AddElement ("arp", "arp","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("3",
+				"3","no", "");
+
+			
+
+						tb.AddElement ("CPU", "CPU","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("even");
+				
+
+			tb.AddElement ("4",
+				"4","no", "");
+
+			
+
+						tb.AddElement ("dhcp", "dhcp","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("5",
+				"5","no", "");
+
+			
+
+						tb.AddElement ("hub_rx_0_0", "hub_rx_0_0","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("even");
+				
+
+			tb.AddElement ("6",
+				"6","no", "");
+
+			
+
+						tb.AddElement ("hub_tx_0_0", "hub_tx_0_0","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("7",
+				"7","no", "");
+
+			
+
+						tb.AddElement ("ip", "ip","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("even");
+				
+
+			tb.AddElement ("8",
+				"8","no", "");
+
+			
+
+						tb.AddElement ("ip_encap", "ip_encap","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("9",
+				"9","no", "");
+
+			
+
+						tb.AddElement ("mac", "mac","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("even");
+				
+
+			tb.AddElement ("10",
+				"10","no", "");
+
+			
+
+						tb.AddElement ("rip", "rip","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("11",
+				"11","no", "");
+
+			
+
+						tb.AddElement ("rsvp", "rsvp","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("even");
+				
+
+			tb.AddElement ("12",
+				"12","no", "");
+
+			
+
+						tb.AddElement ("tcp", "tcp","no", "", "yes");
+
+					
+
+						tb.AddElement ("98672", "98672","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("49320", "49320","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("13",
+				"13","no", "");
+
+			
+
+						tb.AddElement ("tpal", "tpal","no", "", "yes");
+
+					
+
+						tb.AddElement ("9008", "9008","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("9008", "9008","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("even");
+				
+
+			tb.AddElement ("14",
+				"14","no", "");
+
+			
+
+						tb.AddElement ("udp", "udp","no", "", "yes");
+
+					
+
+						tb.AddElement ("0", "0","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+					tb.AddLine ("odd");;
+				
+
+			tb.AddElement ("15",
+				"15","no", "");
+
+			
+
+						tb.AddElement ("[Total]", "[Total]","no", "", "yes");
+
+					
+
+						tb.AddElement ("215392", "215392","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("8", "8","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("49352", "49352","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+						tb.AddElement ("9008", "9008","no", "", "yes");
+
+					
+
+						tb.AddElement ("58320", "58320","no", "", "yes");
+
+					
+
+						tb.AddElement ("", "","no", "", "yes");
+
+					
+
+		function GenerateTable ()
+			{
+			// Write out rows
+			document.open();
+
+			tb.WriteHeader ();
+			tb.WriteRows();
+
+			document.write ("</tr></table>");
+			document.close ();
+			}
+
+		function UpdateTable ()
+			{
+			// Set appropriate columns
+			if (arguments.length == 5)
+				{
+				tb.RemoveColumns (arguments[1]);
+				tb.RestoreColumns (arguments[0]);
+				tb.ResetColumn(arguments[2], arguments[3], arguments[4])
+				tb.ResetTable();
+				}
+			}
+
+		function UpdateVisualizationValues (s_type, thresh)
+			{
+			g_sort_type = s_type;
+			g_threshold = thresh;
+			}
+
+		// Write out table for the first time
+		GenerateTable();
+
+	</SCRIPT>
+</body>
+</html>

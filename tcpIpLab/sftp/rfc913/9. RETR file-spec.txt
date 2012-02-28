@@ -1,0 +1,32 @@
+
+     9. RETR file-spec
+
+         Requests that the remote system send the specified file.
+
+         Receiving a '-' from the server should abort the RETR command
+         and the server will wait for another command.
+
+         The reply from the remote system is:
+
+             <number-of-bytes-that-will-be-sent> (as ascii digits)
+
+            -File doesn't exist
+
+         You then reply to the remote system with:
+
+            SEND (ok, waiting for file)
+
+               The file is then sent as a stream of exactly the number
+               of 8-bit bytes specified.  When all bytes are received
+               control passes back to you (the remote system is waiting
+               for the next command).  If you don't receive a byte
+               within a reasonable amount of time you should abort the
+               file transfer by closing the connection.
+
+            STOP (You don't have enough space to store file)
+
+               Replies could be:
+
+                  +ok, RETR aborted
+
+         You are then ready to send another command to the remote host.

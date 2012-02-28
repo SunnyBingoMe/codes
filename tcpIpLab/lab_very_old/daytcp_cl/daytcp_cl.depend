@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1287896506 source:/media/now/0_tcpproj/daytcp_cl/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<errno.h>
+	<string.h>
+	<netdb.h>
+	<sys/types.h>
+	<netinet/in.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<time.h>
+

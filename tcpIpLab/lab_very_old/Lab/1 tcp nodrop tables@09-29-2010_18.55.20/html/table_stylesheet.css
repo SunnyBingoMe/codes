@@ -1,0 +1,153 @@
+				
+
+	html {background-color: #ffffff;}
+
+	body {margin: 0%;
+	background-color: #CCCCCC;
+	font-size: .8em;
+	margin-left: 20px;
+	margin-top: 20px;}
+
+	td {}
+
+	#head {
+	#margin: 5px;
+	#color: #bdbf8e;
+	#font-size: 2.8em;
+	#padding-left: 3px;
+	#padding-right: 3px;
+	#padding-bottom: 5px;
+	#padding-top: 0px;
+	#text-align: center;
+	#letter-spacing: 2px;
+	#font-style: italic;
+	#border-bottom: 20px #bdbf8e solid;}
+
+	table{
+	border: 1px #999999 solid;
+	display: table;
+	font-size: 1.5em;
+	border-collapse: collapse;
+	color: #000000;
+	margin-right: 0%;
+	width: 100%;}
+
+	td, th {
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 12px; 
+	COLOR: #000000; 
+	LINE-HEIGHT: 14px; 
+	FONT-FAMILY: Arial, Helvetica, sans-serif; 
+	text-decoration: none;
+	border: 2px #808080 solid;
+	padding: 5px;}
+
+	.table_button {
+	border: 0px #999999 solid;
+	text-valign:buttom;
+	border-collapse: collapse;
+	width:auto;}
+
+	.table_title {
+	border: 0px solid;
+	text-align:center;
+	width:auto;
+	position: relative;
+	visibility: visible;
+	bottom: 1em;}
+
+	.td_title {
+	border: 0px #c0c0c0 solid;
+	width: auto;
+	font-family: "Times New Roman", Times, serif; 
+	font-size: 22px; 
+	line-height: 22px; 
+	font-weight: normal; 
+	text-align:left;
+	color: #000000;
+	}
+
+	.td_button {
+	border: 0px #c0c0c0 solid;
+	width: auto;
+	text-align:left;
+	font-size: 12px;
+	text-valign:buttom;
+	}
+
+	.td_empty {
+	border: 0px #c0c0c0 solid;
+	width: 0px;
+	text-align:left;
+	}
+
+	.row_head {
+	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; 
+	font-weight: bold; 
+	color:#ffffff;
+	text-align:center;
+	background-color: #330066}
+
+	.row_even {
+	font-style: normal;
+	color: #000000;
+	text-align:left;	
+	background-color: #CCCCCC
+	}
+
+	.row_odd {
+	border: 1px #486ba1 solid
+	font-style: normal;
+	color: #000000;
+	text-align:left;
+	background-color: #ffffff
+	}
+
+	a {text-decoration: none; 
+	color: #000000}
+
+	.row_head a:visited {
+	color:#ffffff;
+	background-color: #330066;
+	padding-top: 2px; 
+	padding-right: 2px; 
+	padding-bottom: 2px; 
+	padding-left: 2px: #FFFFFF
+	}
+
+	.row_odd a:hover { 
+	background-color: #330066; 
+	color: #FFFFFF; 
+	padding-top: 2px; 
+	padding-right: 2px; 
+	padding-bottom: 2px; 
+	padding-left:: 2px: #FFFFFF}
+
+	.row_odd a:link {
+	color: #0000ff;}
+	.row_even a:link {
+	color: #0000ff;}
+	.row_odd a:visited {
+	color: #0000ff;}
+	.row_even a:visited {
+	color: #0000ff;}
+
+	.row_even a:hover { 
+	background-color: #330066; 
+	color: #FFFFFF; 
+	padding-top: 2px; 
+	padding-right: 2px; 
+	padding-bottom: 2px; 
+	padding-left: 2px: #FFFFFF}
+
+	.row_head a:hover { 
+	background-color: #8080ff; 
+	color: #ffffff; 
+	padding-top: 2px; 
+	padding-right: 2px; 
+	padding-bottom: 2px; 
+	padding-left: 2px: #FFFFFF} 
+
+	.row_head a:link {text-decoration: none;
+	color: #ffffff;}
+

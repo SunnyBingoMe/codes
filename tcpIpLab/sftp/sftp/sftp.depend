@@ -1,0 +1,54 @@
+# depslib dependency file v1.0
+1295295191 source:/media/NOW/ET2440_TCPIP/sftp/sftp/main.cpp
+	"/media/NOW/ET2440_TCPIP/sftp/sftp.h"
+
+1295295166 /media/NOW/ET2440_TCPIP/sftp/sftp.h
+	<algorithm>
+	<arpa/inet.h>
+	<dirent.h>
+	<errno.h>
+	<netdb.h>
+	<netinet/in.h>
+	<signal.h>
+	<stdio.h>
+	<string.h>
+	<sys/socket.h>
+	<sys/stat.h>
+	<sys/statvfs.h>
+	<sys/types.h>
+	<sys/wait.h>
+	"frequentFunction.h"
+	"sftpFunctionDeclaration.h"
+	"sftpStruct.h"
+
+1293694791 /media/NOW/codes/debugAndalways.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<sys/timeb.h>
+	<time.h>
+
+1294021008 /media/NOW/ET2440_TCPIP/sftp/sftpFunctionDeclaration.h
+
+1293987556 /media/NOW/codes/frequentFunction.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<sys/timeb.h>
+	<time.h>
+
+1295294035 /media/NOW/ET2440_TCPIP/sftp/sftpStruct.h
+
+1294186821 /media/NOW/ET2440_TCPIP/sftp/frequentFunction.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<sys/timeb.h>
+	<time.h>
+	<iostream>
+	<string>
+	<sstream>
+

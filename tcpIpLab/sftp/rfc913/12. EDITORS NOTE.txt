@@ -1,0 +1,73 @@
+
+12. EDITORS NOTE
+
+   Mark Lotter receives full credit for all the good ideas in this memo.
+   As RFC editor, i have made an number of format changes, a few wording
+   changes, and one or two technical changes (mostly in the TYPEs).  I
+   accept full responsibility for any flaws i may have introduced.
+
+   A draft form of this memo was circulated for comments.  I will
+   attempt to list the issues raised and summarize the pros and cons,
+   and resolution for each.
+
+      ASCII Commands vs Binary Operation Codes
+
+         The ASCII command style is easier to debug, the extra
+         programming cost in minimal, the extra transmission cost is
+         trivial.
+
+         Binary operation codes are more efficient, and a few days of
+         debugging should not out weigh years of use.
+
+         Resolution:  I have kept the ASCII Commands.
+
+      Additional Modes
+
+         Pro:  For some machines you can't send all the bits in a word
+         using this protocol.  There should be some additional mode to
+         allow it.
+
+         Con:  Forget it, this is supposed to be SIMPLE file transfer.
+         If you need those complex modes use real FTP.
+
+         Resolution:  I have added the Continuous mode.
+
+      CRLF Conversion
+
+         Pro:  In ASCII type, convert the local end of line indicator to
+         CRLF on the way out of the host and onto the network.
+
+         Con:  If you require that you have to look at the bytes as you
+         send them, otherwise you can just send them.  Most of the time
+         both sides will have the same end of line convention anyway.
+         If someone needs a conversion it can be done with a TECO macro
+         separately.
+
+         Resolution:  I have required CRLF conversion in ASCII type.  If
+         you have the same kind of machines and the same end of line
+         convention you can avoid the extra cost of conversion by using
+         the binary or continuous type.
+
+      TCP Urgent
+
+         Pro:  Use TCP Urgent to abort a transfer, instead of aborting
+         the connection.  Then one could retry the file, or try a
+         different file without having to login again.
+
+         Con:  That would couple SFTP to TCP too much.  SFTP is supposed
+         to be able to be work over any reliable 8-bit data stream.
+
+         Resolution:  I have not made use of TCP Urgent.
+
+      Random Access
+
+         Pro:  Wouldn't it be nice if (WIBNIF) SFTP had a way of
+         accessing parts of a file?
+
+         Con:  Forget it, this is supposed to be SIMPLE file transfer.
+         If you need random access use real FTP (oops, real FTP doesn't
+         have random access either -- invent another protocol?).
+
+         Resolution:  I have not made any provision for Random Access.
+
+   -- jon postel.

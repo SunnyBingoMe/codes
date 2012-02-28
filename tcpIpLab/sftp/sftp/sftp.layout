@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="../frequentFunction.h" open="1" top="0" tabpos="5">
+		<Cursor position="493" topLine="0" />
+	</File>
+	<File name="../sftp.h" open="1" top="0" tabpos="6">
+		<Cursor position="9040" topLine="72" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1208" topLine="32" />
+	</File>
+	<File name="../sftpFunctionDeclaration.h" open="1" top="0" tabpos="4">
+		<Cursor position="302" topLine="0" />
+	</File>
+	<File name="../sftpStruct.h" open="1" top="0" tabpos="3">
+		<Cursor position="1325" topLine="9" />
+	</File>
+</CodeBlocks_layout_file>

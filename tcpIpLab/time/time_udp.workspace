@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="timeudp/timeudp.cbp" active="1" />
+		<Project filename="timeudp_cl/timeudp_cl.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

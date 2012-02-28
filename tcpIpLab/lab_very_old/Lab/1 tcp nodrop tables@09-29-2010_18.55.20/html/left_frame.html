@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<TITLE>Report Menu</TITLE>
+<SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript" SRC="../support/ua.js"></SCRIPT><SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript" SRC="../support/javascript_support.js"></SCRIPT>				
+
+		<style>
+		    BODY {background-color: #CCCCCC}
+	    	TD {
+				font-size: 12px;
+				font-family: Arial, Helvetica, sans-serif;
+	    		text-decoration: none;
+	    		white-space:nowrap;}
+
+		    HEAD {
+				font-size: 12px;
+				font-family: Arial, Helvetica, sans-serif;}
+
+		    A  {text-decoration: none;
+   		 		font-family: Arial, Helvetica, sans-serif;
+				font-size: 12px;
+				color: #330066}
+
+			A:hover {background-color: #330066;
+				color: #CCCCCC;}
+		</style>
+
+		<!--
+    	 (Please keep all copyright notices.)
+	     This frameset document includes the Treeview script.
+    	 Script found at: http://www.treeview.net
+	     Author: Marcelino Alves Martins
+
+    	 Instructions:
+		 - Through the style tag you can change the colors and types
+		   of fonts to the particular needs of your site.
+		 - A predefined block has been made for stylish people with
+		   black backgrounds.
+		-->
+
+<TITLE>Report Treeview</TITLE>
+<a href="network_diagram.html" TARGET="basefrm"><b>Network Diagram</b></a>
+<br>
+<br>
+<script src="../support/ua.js"></script><script src="../support/ftiens4.js"></script><SCRIPT LANGUAGE="JavaScript1.2">
+
+			//Environment variables are usually set at the top of this file.
+			USETEXTLINKS = 1
+			STARTALLOPEN = 0
+			USEFRAMES = 1
+			USEICONS = 0
+			WRAPTEXT = 1
+			PERSERVESTATE = 0
+			ICONPATH = "../support/"
+			HIGHLIGHT = 1
+
+			
+
+			foldersTree = gFld("", "right_frame.html");
+
+			
+
+					doc_GlobalTables
+						= insFld(foldersTree,
+							gFld("<b>Global Tables</b>", ""))
+
+					
+
+					doc_ObjectTables
+						= insFld(foldersTree,
+							gFld("<b>Object Tables</b>", ""))
+
+					
+
+						doc_Network
+							= insFld(doc_ObjectTables,
+								gFld("<b>Network</b>",
+									""));
+
+						
+
+						doc_Paris
+							= insFld(doc_Network,
+								gFld("<b>Paris</b>",
+									""));
+
+						
+
+						doc_Server_Paris
+							= insFld(doc_Paris,
+								gFld("<b>Server_Paris</b>",
+									""));
+
+						
+
+						doc_PacketStatistics
+							= insFld(doc_Server_Paris,
+								gFld("<b>Packet Statistics</b>",
+									""));
+
+						
+
+							insDoc(doc_PacketStatistics,
+								gLnk("R", "Number of Packets Copied",
+									"_obj_1._tbl_1.html"))
+						
+
+							insDoc(doc_PacketStatistics,
+								gLnk("R", "Number of Packets Created",
+									"_obj_1._tbl_2.html"))
+						
+
+							insDoc(doc_PacketStatistics,
+								gLnk("R", "Number of Packets Destroyed",
+									"_obj_1._tbl_3.html"))
+						</SCRIPT>
+</head>
+<body>
+<SCRIPT>initializeDocument();</SCRIPT>
+</body>
+</html>

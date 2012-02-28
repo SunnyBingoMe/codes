@@ -1,0 +1,397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>c语言socket编程指南,Linux技术文章,Linux系列教程,Linux</title>
+<meta  name="keywords" content="c语言socket编程指南,Linux技术文章,Linux系列教程,Linux,操作系统"/>
+<meta  name="description" content="c语言socket编程指南介绍 　　Socket 编程让你沮丧吗？从man pages中很难得到有用的信息吗？你想跟上时代去编Internet相关的程序，但是为你在调用 connect() 前的bind() 的结构而不知所措？等等…    &amp;nbs"/>
+<meta name="robots" content="index,follow"/>
+<meta name="GOOGLEBOT" content="INDEX,FOLLOW" />
+<link href="/css/2010/article/css.css" rel="stylesheet" type="text/css" />
+<link href="/css/2010/article/ad.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" language="javascript" src="/JS/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" language="javascript" src="/JS/2010/Article.js"></script>
+</head>
+<body>
+<div class="contant">
+	 <div class="index_top">
+	  <p>领先的中文IT技术网站&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.firnow.com" target="_blank">IT技术从现在起飞</a></p>
+	  <span>飞诺旗下:&nbsp;<a href="http://bbs.firnow.com" target="_blank">技术社区</a>&nbsp;|&nbsp;<a href="http://ebook.firnow.com" target="_blank">在线电子书</a>&nbsp;|&nbsp;<a href="http://test.firnow.com" target="_blank">在线试题</a>&nbsp;|&nbsp;<a href="http://download.firnow.com" target="_blank">资源下载</a>&nbsp;|&nbsp;<a href="http://so.firnow.com" target="_blank">飞诺搜索</a>&nbsp;|&nbsp;<a href="http://blog.firnow.com" target="_blank">技术博客</a></span>
+	</div>
+	<div class="index_header">
+	    <div class="index_logo"><a href="http://www.firnow.com" target="_blank"><img src="/images/2010/article/logo.gif" width="181" height="88" border="0" /></a></div>
+	    <div class="ad1"><script language="javascript" src="/ad/2010/article/ad1.js"></script></div>
+		<div class="index_header_right">
+		  <table width="100%" height="82" border="0" cellpadding="10">
+            <tr>
+              <td colspan="4" valign="middle">
+			    <form name="search" onSubmit="search(document.all.search.value);">
+                <img style="float:left; margin-top:2px;" src="/images/2010/article/sousu.gif" width="68" height="25" />
+                <label>
+                <input type="text" class="index_header_right_text1" name="search" />
+              </label>
+			  <label>
+                <input name="Submit" style="float:left; margin-left:6px; display:inline;" type="image" value="提交" src="/images/2010/article/sou_ok.gif"  />
+              </label></form></td>
+            </tr>
+            <form name="login" onSubmit="loginbbs();">
+            <tr>
+              <td width="19%">用户名：</td>
+              <td width="33%"><label>
+                <input type="text" class="index_header_right_text2" name="username" />
+              </label></td>
+              <td width="16%">密&nbsp;&nbsp;&nbsp;码：</td>
+              <td width="32%"><input type="password" class="index_header_right_text2" name="password" /></td>
+            </tr>
+            <tr>
+              <td><label><input type="submit" value="" class="input_login"></label></td>
+              <td>&nbsp;&nbsp;<input type="buttom" onclick="self.location='http://bbs.firnow.com/register.aspx'" value="" class="input_reg"></td>
+              <td><a href="http://www.firnow.com" target="_blank">飞诺网</a></td>
+              <td><a href="javascript:window.external.addFavorite('http://www.firnow.com','飞诺网');">加入收藏</a></td>
+            </tr>
+            </form>
+          </table>
+		</div>
+	</div>
+	<div class="index_banner">
+	    <a href="http://www.firnow.com" class="index_banner_on" onmouseover="ChgTab(1);" target="_blank">飞诺网</a>
+		<a href="/list/10601.shtml" onmouseover="ChgTab(2);" target="_blank">Linux</a>
+		<a href="http://news.firnow.com" target="_blank">新闻频道</a>
+		<a href="http://dev.firnow.com" target="_blank">开发频道</a>
+		<a href="http://sys.firnow.com/" target="_blank">系统频道</a>
+		<a href="http://server.firnow.com/" target="_blank">服务器</a>
+		<a href="http://network.firnow.com/" target="_blank">网络频道</a>
+		<a href="http://netsecurity.firnow.com/" target="_blank">网络安全</a>
+		<a href="http://Dev.firnow.com/java.shtml" target="_blank">Java频道</a>
+		<a href="http://Dev.firnow.com/c.shtml" target="_blank">C/C++</a>
+		<a href="http://Dev.firnow.com/php.shtml" target="_blank">PHP开发</a>
+		<a href="http://ebook.firnow.com" target="_blank">电子书</a>
+		<a href="http://download.firnow.com" target="_blank">资源下载</a>
+		<a href="http://bbs.firnow.com" target="_blank">社&nbsp;区</a>
+		<a href="http://blog.firnow.com" target="_blank">博&nbsp;客</a>
+		<a href="http://test.firnow.com" target="_blank">在线试题</a>
+	</div>
+	<div class="index_banner2" id="index1">
+	    	    <a href="/list/106.shtml" target="_blank">操作系统</a>
+	    	    <a href="/list/10601.shtml" target="_blank">Linux</a>
+	    	    <a href="/list/10602.shtml" target="_blank">Windows xp</a>
+	    	    <a href="/list/10603.shtml" target="_blank">Windows 2003</a>
+	    	    <a href="/list/10604.shtml" target="_blank">Windows 2000/NT</a>
+	    	    <a href="/list/10605.shtml" target="_blank">DOS</a>
+	    	    <a href="/list/10606.shtml" target="_blank">Mac OS X</a>
+	    	    <a href="/list/10607.shtml" target="_blank">Vista</a>
+	    	    <a href="/list/10608.shtml" target="_blank">FreeBSD</a>
+	    	    <a href="/list/10609.shtml" target="_blank">Solaris</a>
+	    	    <a href="/list/10610.shtml" target="_blank">SCO UNIX</a>
+	    	    <a href="/list/10611.shtml" target="_blank">AIX</a>
+	    	    <a href="/list/10612.shtml" target="_blank">Windows 2008</a>
+	    	</div>
+	<div class="cle"></div>
+		<div class="index_banner2" style="display:none" id="index2">
+	     	    <a href="/list/1060101.shtml" target="_blank">Linux系列教程</a>
+	    	    <a href="/list/1060102.shtml" target="_blank">Linux应用技巧</a>
+	    	    <a href="/list/1060103.shtml" target="_blank">Linux技术文章</a>
+	    	</div>
+	<div class="cle"></div>
+	<div class="index_banner3">
+	   <a href="/list/103.shtml" target="_blank">编程开发</a>
+	   <a href="/list/10303.shtml" target="_blank">JAVA</a>
+	   <a href="/c.shtml" target="_blank">C/C++</a>
+	   <a href="/list/10302.shtml" target="_blank">C++</a>
+	   <a href="/list/10312.shtml" target="_blank">VC</a>
+	   <a href="/list/10301.shtml" target="_blank">C语言</a>
+	   <a href="/list/10304.shtml" target="_blank">VB</a>
+	   <a href="/list/10314.shtml" target="_blank">C#</a>
+	   <a href="/list/10305.shtml" target="_blank">Delphi</a>
+	   <a href="/list/10306.shtml" target="_blank">Foxpro</a>
+	   <a href="/list/10307.shtml" target="_blank">汇编</a>
+	   <a href="/list/10313.shtml" target="_blank">shell编程</a>
+	   <a href="/list/10308.shtml" target="_blank">游戏开发</a>
+	   <a href="/list/10310.shtml" target="_blank">软件工程师</a>
+	   <a href="/list/104.shtml" target="_blank">WEB开发</a>
+	   <a href="/list/10406.shtml" target="_blank">PHP</a>
+	   <a href="/list/10405.shtml" target="_blank">ASP</a>
+	   <a href="/list/10404.shtml" target="_blank">Asp.net</a>
+	   <a href="/list/10405.shtml" target="_blank">JSP</a>
+	   <a href="/list/10410.shtml" target="_blank">AJAX</a>
+	   <a href="/list/10408.shtml" target="_blank">CGI</a>
+	   <a href="/list/10108.shtml" target="_blank">JavaScript</a>
+	   <a href="/list/10104.shtml" target="_blank">HTML</a>
+	   <a href="/list/10105.shtml" target="_blank">CSS</a>
+	   <a href="/list/107.shtml" target="_blank">数据库</a>
+	   <a href="/list/10703.shtml" target="_blank">MSSQL</a>
+	   <a href="/list/10702.shtml" target="_blank">Mysql</a>
+	   <a href="/list/10704.shtml" target="_blank">Oracle</a>
+	   <a href="/list/10701.shtml" target="_blank">Access</a>
+	   <a href="/list/10705.shtml" target="_blank">Sybase</a>
+	   <a href="/list/10707.shtml" target="_blank">DB2</a>
+	   <a href="/list/1070304.shtml" target="_blank">sql2005</a>
+	   <a href="/list/105.shtml" target="_blank">Office</a>
+	   <a href="/list/10501.shtml" target="_blank">Word</a>
+	   <a href="/list/10502.shtml" target="_blank">Excel</a>
+	   <a href="/list/10503.shtml" target="_blank">Powerpoint</a>
+	   <a href="/list/10504.shtml" target="_blank">Wps</a>
+	   <a href="/list/109.shtml" target="_blank">认证考试</a>
+	   <a href="/list/1090103.shtml" target="_blank">二级C语言</a>
+	   <a href="/list/1090203.shtml" target="_blank">三级网络</a>
+	   <a href="/list/109030101.shtml" target="_blank">程序员</a>
+	   <a href="/list/109030202.shtml" target="_blank">网络工程师</a>
+	   <a href="/list/10905.shtml" target="_blank">思科认证</a>
+	</div>
+	<div class="index_banner4">
+	<img src="/images/2010/article/logo1.gif" />
+	<p>您当前的位置：<a href="http://www.firnow.com" target="_blank">飞诺网</a>
+            >>&nbsp<a href="/linux.shtml" target="_blank">linux</a>
+          >>&nbsp<a href="/list/1060103.shtml" target="_blank">Linux技术文章</a></p>
+	</div>
+   <div class="index_main">
+   	<div class="ad2"><script language="javascript" src="/ad/2010/article/ad2.js"></script></div>
+   	<div class="ad3"><script language="javascript" src="/ad/2010/article/ad3.js"></script></div>
+  <div class="cle"></div>
+   <div class="index_main_left">
+        <div class="index_main_left_1">
+		     <div class="index_main_left_1_top">
+			      <div class="index_main_left_1_top2"><p>c语言socket编程指南</p></div>
+				  <div class="index_main_left_1_top3">
+				      <p>www.firnow.com&nbsp;&nbsp;&nbsp;&nbsp;时间&nbsp;：&nbsp;2008-08-15&nbsp;&nbsp;作者：佚名 &nbsp;&nbsp;编辑：本站 点击：&nbsp;&nbsp;<span id="articleTimes"></span> <a href="#comment" style="color:#F55308;">[&nbsp;评论&nbsp;]</a></p>
+				  </div>
+			 </div>
+			 <div class="index_main_left_center">
+			 <div class="ad4"><script language="javascript" src="/ad/2010/article/ad4.js"></script></div>
+			 <div class="ad5"><script language="javascript" src="/ad/2010/article/ad5.js"></script></div>
+			 <div class="ad6"><script language="javascript" src="/ad/2010/article/ad6.js"></script></div>
+			 r>#define BACKLOG 10 /*多少等待连接控制*/&nbsp; <br>main()&nbsp; <br>　　 {&nbsp; <br>　　 int sockfd, new_fd; /* listen on sock_fd, new connection on new_fd&nbsp; <br>*/&nbsp; <br>　　 struct sockaddr_in my_addr; /* my address information */&nbsp; <br>　　 struct sockaddr_in their_addr; /* connector's address information */&nbsp; <br>　　 int sin_size; <br>if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {&nbsp; <br>　　 perror("socket");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; </p>
+<p>my_addr.sin_family = AF_INET; /* host byte order */&nbsp; <br>　　 my_addr.sin_port = htons(MYPORT); /* short, network byte order */&nbsp; <br>　　 my_addr.sin_addr.s_addr = INADDR_ANY; /* auto-fill with my IP */&nbsp; <br>　　 bzero(&amp;(my_addr.sin_zero),; /* zero the rest of the struct */&nbsp; </p>
+<p>if (bind(sockfd, (struct sockaddr *)&amp;my_addr, sizeof(struct&nbsp; <br>sockaddr))== -1) {&nbsp; <br>　　 perror("bind");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; <br>if (listen(sockfd, BACKLOG) == -1) {&nbsp; <br>　　 perror("listen");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; </p>
+<p>while(1) { /* main accept() loop */&nbsp; <br>　　 sin_size = sizeof(struct sockaddr_in);&nbsp; <br>　　 if ((new_fd = accept(sockfd, (struct sockaddr *)&amp;their_addr, \&nbsp; <br>　　 &amp;sin_size)) == -1) {&nbsp; <br>　　 perror("accept");&nbsp; <br>　　 continue;&nbsp; <br>　　 }&nbsp; <br>　　 printf("server: got connection from %s\n", \&nbsp; <br>　　 inet_ntoa(their_addr.sin_addr));&nbsp; <br>　　 if (!fork()) { /* this is the child process */&nbsp; <br>　　 if (send(new_fd, "Hello, world!\n", 14, 0) == -1)&nbsp; <br>　　 perror("send");&nbsp; <br>　　 close(new_fd);&nbsp; <br>　　 exit(0);&nbsp; <br>　　 }&nbsp; <br>　　 close(new_fd); /* parent doesn't need this */&nbsp; <br>while(waitpid(-1,NULL,WNOHANG) &gt; 0); /* clean up child processes */&nbsp; <br>　　 }&nbsp; <br>　　 }&nbsp; <br>如果你很挑剔的话，一定不满意我所有的代码都在一个很大的main() 函数中。如果你不喜欢，可以划分得更细点。 <br>你也可以用我们下一章中的程序得到服务器端发送的字符串。 <br>-------------------------------------------------------------------------------- <br>简单的客户程序&nbsp; <br>　　这个程序比服务器还简单。这个程序的所有工作是通过 3490 端口连接到命令行中指定的主机，然后得到服务器发送的字符串。&nbsp; <br>客户代码:&nbsp; <br>#include &lt;stdio.h&gt; <br>　　#include &lt;stdlib.h&gt; <br>　　#include &lt;errno.h&gt; <br>　　#include &lt;string.h&gt; <br>　　#include &lt;sys/types.h&gt; <br>　　#include &lt;netinet/in.h&gt; <br>　　#include &lt;sys/socket.h&gt; <br>　　#include &lt;sys/wait.h&gt; <br>#define PORT 3490 /* 客户机连接远程主机的端口 */&nbsp; <br>#define MAXDATASIZE 100 /* 每次可以接收的最大字节 */&nbsp; <br>int main(int argc, char *argv[])&nbsp; <br>　　 {&nbsp; <br>　　 int sockfd, numbytes;&nbsp; <br>　　 char buf[MAXDATASIZE];&nbsp; <br>　　 struct hostent *he;&nbsp; <br>　　 struct sockaddr_in their_addr; /* connector's address information */&nbsp; <br>if (argc != 2) {&nbsp; <br>　　 fprintf(stderr,"usage: client hostname\n");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; <br>if ((he=gethostbyname(argv[1])) == NULL) { /* get the host info */&nbsp; <br>　　 herror("gethostbyname");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; </p>
+<p>if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {&nbsp; <br>　　 perror("socket");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; </p>
+<p>their_addr.sin_family = AF_INET; /* host byte order */&nbsp; <br>　　their_addr.sin_port = htons(PORT); /* short, network byte order */&nbsp; <br>　　their_addr.sin_addr = *((struct in_addr *)he-&gt;h_addr);&nbsp; <br>　　bzero(&amp;(their_addr.sin_zero),; /* zero the rest of the struct */&nbsp; <br>if (connect(sockfd, (struct sockaddr *)&amp;their_addr,sizeof(struct&nbsp; <br>sockaddr)) == -1) {&nbsp; <br>　　 perror("connect");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; <br>if ((numbytes=recv(sockfd, buf, MAXDATASIZE, 0)) == -1) {&nbsp; <br>　　 perror("recv");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; <br>buf[numbytes] = '\0';&nbsp; <br>printf("Received: %s",buf);&nbsp; <br>close(sockfd);&nbsp; <br>return 0;&nbsp; <br>　　 }&nbsp; <br>注意，如果你在运行服务器之前运行客户程序，connect() 将返回 "Connection refused" 信息，这非常有用。 <br>-------------------------------------------------------------------------------- <br>数据包 Sockets&nbsp; <br>　　我不想讲更多了，所以我给出代码 talker.c 和 listener.c。&nbsp; <br>listener 在机器上等待在端口 4590 来的数据包。talker 发送数据包到 一定的机器，它包含用户在命令行输入的内容。&nbsp; <br>这里就是 listener.c：&nbsp; <br>#include &lt;stdio.h&gt; <br>　　#include &lt;stdlib.h&gt; <br>　　#include &lt;errno.h&gt; <br>　　#include &lt;string.h&gt; <br>　　#include &lt;sys/types.h&gt; <br>　　#include &lt;netinet/in.h&gt; <br>　　#include &lt;sys/socket.h&gt; <br>　　#include &lt;sys/wait.h&gt; <br>#define MYPORT 4950 /* the port users will be sending to */&nbsp; <br>#define MAXBUFLEN 100&nbsp; <br>main()&nbsp; <br>　　 {&nbsp; <br>　　 int sockfd;&nbsp; <br>　　 struct sockaddr_in my_addr; /* my address information */&nbsp; <br>　　 struct sockaddr_in their_addr; /* connector's address information */&nbsp; <br>　　 int addr_len, numbytes;&nbsp; <br>　　 char buf[MAXBUFLEN];&nbsp; <br>if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {&nbsp; <br>　　 perror("socket");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; <br>my_addr.sin_family = AF_INET; /* host byte order */&nbsp; <br>　　 my_addr.sin_port = htons(MYPORT); /* short, network byte order */&nbsp; <br>　　 my_addr.sin_addr.s_addr = INADDR_ANY; /* auto-fill with my IP */&nbsp; <br>　　 bzero(&amp;(my_addr.sin_zero),; /* zero the rest of the struct */&nbsp; <br>if (bind(sockfd, (struct sockaddr *)&amp;my_addr, sizeof(struct sockaddr))&nbsp; <br>\&nbsp; <br>　　 == -1) {&nbsp; <br>　　 perror("bind");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 } <br>addr_len = sizeof(struct sockaddr);&nbsp; <br>　　 if ((numbytes=recvfrom(sockfd, buf, MAXBUFLEN, 0, \&nbsp; <br>　　 (struct sockaddr *)&amp;their_addr, &amp;addr_len)) == -1) {&nbsp; <br>　　 perror("recvfrom");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; <br>printf("got packet from %s\n",inet_ntoa(their_addr.sin_addr));&nbsp; <br>　　 printf("packet is %d bytes long\n",numbytes);&nbsp; <br>　　 buf[numbytes] = '\0';&nbsp; <br>　　 printf("packet contains \"%s\"\n",buf);&nbsp; <br>close(sockfd);&nbsp; <br>　　 }&nbsp; <br>注意在我们的调用 socket()，我们最后使用了 SOCK_DGRAM。同时， 没有必要去使用 listen() 或者 accept()。我们在使用无连接的数据报套接 字！&nbsp; <br>下面是 talker.c：&nbsp; <br>#include &lt;stdio.h&gt; <br>　　#include &lt;stdlib.h&gt; <br>　　#include &lt;errno.h&gt; <br>　　#include &lt;string.h&gt; <br>　　#include &lt;sys/types.h&gt; <br>　　#include &lt;netinet/in.h&gt; <br>　　#include &lt;sys/socket.h&gt; <br>　　#include &lt;sys/wait.h&gt; <br>#define MYPORT 4950 /* the port users will be sending to */&nbsp; <br>int main(int argc, char *argv[])&nbsp; <br>　　 {&nbsp; <br>　　 int sockfd;&nbsp; <br>　　 struct sockaddr_in their_addr; /* connector's address information */&nbsp; <br>　　 struct hostent *he;&nbsp; <br>　　 int numbytes;&nbsp; </p>
+<p>if (argc != 3) {&nbsp; <br>　　 fprintf(stderr,"usage: talker hostname message\n");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; </p>
+<p>if ((he=gethostbyname(argv[1])) == NULL) { /* get the host info */&nbsp; <br>　　 herror("gethostbyname");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; </p>
+<p>if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {&nbsp; <br>　　 perror("socket");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; </p>
+<p>their_addr.sin_family = AF_INET; /* host byte order */&nbsp; <br>　　 their_addr.sin_port = htons(MYPORT); /* short, network byte order&nbsp; <br>*/&nbsp; <br>　　 their_addr.sin_addr = *((struct in_addr *)he-&gt;h_addr);&nbsp; <br>　　 bzero(&amp;(their_addr.sin_zero),; /* zero the rest of the struct */&nbsp; <br>if ((numbytes=sendto(sockfd, argv[2], strlen(argv[2]), 0, \&nbsp; <br>　　 (struct sockaddr *)&amp;their_addr, sizeof(struct sockaddr))) == -1) {&nbsp; <br>　　 perror("sendto");&nbsp; <br>　　 exit(1);&nbsp; <br>　　 }&nbsp; <br>printf("sent %d bytes to&nbsp; <br>%s\n",numbytes,inet_ntoa(their_addr.sin_addr));&nbsp; <br>close(sockfd);&nbsp; <br>return 0;&nbsp; <br>　　 }&nbsp; <br>这就是所有的了。在一台机器上运行 listener，然后在另外一台机器上 运行 talker。观察它们的通讯！ <br>除
+了一些我在上面提到的数据套接字连接的小细节外，对于数据套接 字，我还得说一些，当一个讲话者呼叫connect()函数时并指定接受者的地
+址时，从这点可以看出，讲话者只能向connect()函数指定的地址发送和接
+受信息。因此，你不需要使用sendto()和recvfrom()
+			 <div align="center" class="pager"><span id="pagesSpan"><a href="136066.html">1</a>　<a href="136066_2.html">2</a>　<a href="136066_3.html">3</a>　<span id="4">4</span>　<a href="136066_5.html">5</a></span></div>
+			 <div class="ad7"><script language="javascript" src="/ad/2010/article/ad7.js"></script></div>
+			 <div class="ad8"><script language="javascript" src="/ad/2010/article/ad8.js"></script></div>
+			 <div class="index_main_err">如果图片或页面不能正常显示请<a href="javascript:void(0)" onClick="ReportError()" class= "redlink"><font color="#990000"><strong>点击这里</strong></font></a></div>
+			 </div>
+			 <div class="index_main_left_foot">
+			      <div class="index_main_left_foot1">
+				  <p><a href="javascript:window.external.addFavorite(self.location,document.title);">【收藏此页】</a><a href="http://bbs.firnow.com" target="_blank">【飞诺社区】</a><a href="#comment">【发表评论】</a><a href="javascript:window.close()">【关闭】</a></p>
+				  <a href="#comment"><img src="/images/2010/article/ping.gif" width="149" height="34" border="0" /></a>
+				  </div>
+				  <div class="index_main_left_foot2">
+				  				  <p>上一篇：<a href="/course/6_system/linux/Linuxjs/2008815/136065.html">Linux USB驱动框架分析</a></p>
+				                    				  <p>下一篇：<a href="/course/6_system/linux/Linuxjs/2008815/136067.html">A Tip: Direct Configure Script To the Correct Path</a></p>
+				  				  </div>
+			 </div> 
+		</div>
+		<div class="ad9"><script language="javascript" src="/ad/2010/article/ad9.js"></script></div>
+		<div class="index_main_left_3">Linux技术文章推荐文章</div>
+		<div class="index_main_left_4">
+		  <ul>
+		  		  		  <li><a href="/course/6_system/linux/Linuxjs/20100311/197916.html" target="_blank">diff命令详解</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20100305/196594.html" target="_blank">ubuntu网络设置详解</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20091101/180817.html" target="_blank">键码错乱之解决方法</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008825/137486.html" target="_blank">ELF可执行文件解读</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008710/132709.html" target="_blank">FC5.0里添加字体和应用程序字体设置！</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20091016/179088.html" target="_blank">细说 #pragma pack(n) [转]</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2007126/90972.html" target="_blank">Gtk+国际化编程</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20091225/185617.html" target="_blank">udev实现原理</a></li>
+		  		  </ul>
+		  <ul>
+		  		  		  <li><a href="/course/6_system/linux/Linuxjs/20100329/201578.html" target="_blank">RHEL5.4配置iptables防火墙</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20090314/161443.html" target="_blank">嵌入式开发C语言面试题[转载]</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20090912/174956.html" target="_blank">高级 Linux 命令精通指南(一)</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/200899/140986.html" target="_blank">kernel部分数据结构列表一(内存管理)</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20091118/182741.html" target="_blank">二层组播协议IGMP proxy或IGMP Snooping</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/2008723/133805.html" target="_blank">最新银河麒麟linux3.0截图！</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20090823/169980.html" target="_blank">Trac+git 来管理wiki和source code</a></li>
+		  		  <li><a href="/course/6_system/linux/Linuxjs/20091020/179593.html" target="_blank">关于堆栈、linux c程序存储空间布局的总结</a></li>
+		  		  </ul>
+		</div>
+		<div class="index_main_left_5">
+		      <div class="index_main_left_5_top"><p><a name="comment"></a>文章评论</p></div>
+			  <div id="divComment" class="index_main_left_5_main"></div>
+		</div>
+		<div class="index_main_left_6">
+		    <div class="index_main_left_6_left">
+			     <div class="index_main_left_6_left_top">请您留言</div>
+				 <div class="index_main_left_6_left_ceneter">
+				  <form>
+				   <table width="84%" height="216" border="0" cellpadding="10">
+                     <tr>
+                       <td width="19%" height="29">昵称：</td>
+                       <td width="81%"><label>
+                         <input type="text" class="index_main_left_6_left_ceneter_text" style="width:150px;" name="tbName" id="tbName" onclick="this.focus();this.select()" maxlength="20" />
+                       </label></td>
+                     </tr>
+                     <tr>
+                       <td>验证码：</td>
+                       <td>
+                       <span style="float:left;"><input name="tbCode" id="tbCode" class="index_main_left_6_left_ceneter_text" type="text" size="6"  /></span><span id="spanCode" style="float:left; clear:right;"><img  id="Img2" onclick="this.src=this.src"  style="display:none;"/></span>
+                     </tr>
+                     <tr>
+                       <td height="26" colspan="2"><a href="http://bbs.firnow.com/register.aspx" style="color:#FF0000">注册会员</a> <a href="http://bbs.firnow.com/login.aspx">会员登录</a></td>
+                     </tr>
+                     <tr>
+                       <td height="100" colspan="2"><label>
+                         <a name="comment"></a><textarea name="tbContent" id="tbContent" class="index_main_left_6_left_ceneter_textarea" rows="5"></textarea>
+                       </label></td>
+                     </tr>
+                     <tr>
+                       <td colspan="2"><label>
+                         <input id="btnCommit" name="btnCommit"  type="image" value="提交" src="/images/2010/article/fabiao.gif" />
+                       </label></td>
+                     </tr>
+                   </table>
+				   </form>
+				 </div>
+			</div>
+			<div class="index_main_left_6_right">
+			   <div class="index_main_left_6_right_top">也许你对以下文章感兴趣</div>
+			   <div class="index_main_left_6_right_center">
+			     <ul>
+				  		          				  <li><a href="/course/6_system/linux/Linuxjs/20090501/166193.html" target="_blank">Ubuntu使用记：访问Windows共享文件夹</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/20091017/179207.html" target="_blank">Linux操作系统的八大特点</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/20090304/157890.html" target="_blank">linux下抓包命令--tcpdump的使用</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/20100323/200873.html" target="_blank">Linux 用户态与内核态的交互 ——netlink 篇</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/2008617/125977.html" target="_blank">使用Screen创建虚拟终端避免Linux远程断线</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/2008821/136859.html" target="_blank">CPU频率调节(SpeedStep, PowerNow)</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/20090304/157864.html" target="_blank">gos-3.1 简单安装</a></li>
+				  				  <li><a href="/course/6_system/linux/Linuxjs/2008814/136001.html" target="_blank">Debian: 让GParted支持Fat32文件格式</a></li>
+				  				  </ul>
+			   </div>
+			</div>
+		</div>
+   </div>
+   <div class="index_main_right">
+   <div class="index_main_right1">
+	     <div class="ad10"><script language="javascript" src="/ad/2010/article/ad10.js"></script></div>
+	     <div class="index_main_right1_top">BBS社区热贴</div>
+	        <ul>
+			<script type="text/javascript" src="http://bbs.firnow.com/tools/showtopics.aspx?order=2&template=7&encoding=GB2312"></script>
+			</ul>
+	     </div>
+		<div class="index_main_right1" style="margin-top:5px;">
+		     <div class="index_main_right1_top1">Linux技术文章相关文章</div>
+		        <ul style="background:#F3F4F6">
+				  				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70531.html" target="_blank">如何架设Ubuntu Linux打印服务器</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70555.html" target="_blank">修改 Fedora 7 屏幕分辨率</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70542.html" target="_blank">linux书籍推荐</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70523.html" target="_blank">手机链接</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70553.html" target="_blank">Linux下的常用命令</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70522.html" target="_blank">LPC2104启动代码之Vectors.s注释</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70561.html" target="_blank">Linux那些事儿之我是Hub(17)八大重量级函数闪亮登场(一)</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70530.html" target="_blank">Linux下使用CUPS提供打印服务</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70552.html" target="_blank">solaris shell下退格键的设置</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70533.html" target="_blank">Cross ToolsChain-交叉编译工具</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70568.html" target="_blank">Infragistics做图 (原创人：yizhiduxiu)</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70536.html" target="_blank">UNIX-CENTER初体验——没有半个字节浪费！</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136122.html" target="_blank">linux通过date命令设置硬件时钟</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136124.html" target="_blank">linux下sysctl命令的使用:保存内核参数并起效</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136074.html" target="_blank">（老文更新)Fedora 9 下 emacs 22 的中文设置 </a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136071.html" target="_blank">i-doit 开源的itil管理软件，感觉做的不是很完善！</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136085.html" target="_blank">shell学习的好地方</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136083.html" target="_blank">linux从入门到精通</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136104.html" target="_blank">如何配置RAID磁盘阵列</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136076.html" target="_blank">限制SU 的使用帐户</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136079.html" target="_blank">深入讨论sed</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008815/136086.html" target="_blank">UNIX 管理超一流高手教你奇招 一</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136113.html" target="_blank">写得蛮好的linux学习笔记 </a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008816/136103.html" target="_blank">《自己动手写操作系统》笔记2-硬盘</a></li>
+				  				</ul>
+		</div>
+		<div class="index_main_right1" style="margin-top:5px;">
+		     <div class="index_main_right1_top1">Linux技术文章热门文章</div>
+		        <ul style="background:#F3F4F6">
+				  				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008923/144856.html" target="_blank">VM中Linux虚拟机下安装VMware Tools</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008717/133288.html" target="_blank">Linux I2C核心、总线与设备驱动</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2008813/135847.html" target="_blank">路由器从DD-WRT固件刷到Tomato(番茄)的详细过程介绍</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2007104/76115.html" target="_blank">使用cygwin X server实现Linux远程桌面 (for windows)</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2007114/84067.html" target="_blank">Fatal error: Call to undefined function mysql_connect()</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/20071027/80286.html" target="_blank">配置Qt/X11安装包</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/200798/70533.html" target="_blank">Cross ToolsChain-交叉编译工具</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/2007930/75458.html" target="_blank">Linux进程间通信</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/20090912/174892.html" target="_blank">Linux的ISO下载大全</a></li>
+				  				  <li><p><a href="/course/6_system/linux/Linuxjs/20071226/94136.html" target="_blank">vmware workstation 6.0之vmware-tools的安装</a></li>
+				  			    </ul>
+		</div>
+	  <div class="index_main_right2">
+		   <div class="index_main_right2_top">频道地图</div>
+		   <div class="index_main_right2_center">
+		      <div class="index_main_right2_center_list">
+			     <p><a href="/list/10601.shtml" target="_blank">Linux</a></p>
+				 <ul>
+				     				     <li><a href="/list/1060101.shtml" target="_blank">Linux系列教程</a></li>
+					 				     <li><a href="/list/1060102.shtml" target="_blank">Linux应用技巧</a></li>
+					 				     <li><a href="/list/1060103.shtml" target="_blank">Linux技术文章</a></li>
+					 				 </ul>
+			  </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10601.shtml" target="_blank">Linux</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10602.shtml" target="_blank">Windows xp</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10603.shtml" target="_blank">Windows 2003</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10604.shtml" target="_blank">Windows 2000/NT</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10605.shtml" target="_blank">DOS</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10606.shtml" target="_blank">Mac OS X</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10607.shtml" target="_blank">Vista</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10608.shtml" target="_blank">FreeBSD</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10609.shtml" target="_blank">Solaris</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10610.shtml" target="_blank">SCO UNIX</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10611.shtml" target="_blank">AIX</a></p>
+			   </div>
+			  			   <div class="index_main_right2_center_list">
+			     <p><a href="/list/10612.shtml" target="_blank">Windows 2008</a></p>
+			   </div>
+			  		   </div>
+		</div>
+   </div>
+	 </div>
+<div align="center" id="foot">
+	 <ul><li><a href="http://en.firnow.com/" rel="nofollow" target="_blank">English</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/about.htm" rel="nofollow" target="_blank">关于我们</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/jrfn.htm" rel="nofollow" target="_blank">诚聘英才</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/contact.htm" rel="nofollow" target="_blank">联系我们</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/fnls.htm" rel="nofollow" target="_blank">网站大事</a> | <a href="http://corp.firnow.com/link.htm" rel="nofollow" target="_blank">友情链接</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://corp.firnow.com/ggfw.htm" rel="nofollow" target="_blank">广告服务</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/map.html" target="_blank">网站地图</a> </li></ul>
+<ul><li>Copyright&copy;2008-2010 <a href="http://www.firnow.com" target="_blank">飞诺网[FirNow.Com]</a> 版权所有 </li></ul>
+    <div id="foot_1"><dl><dt><img border="0" align="absmiddle" src="/images/2010/article/jyxwzbaxx.gif"> 
+<img width="44" height="42" border="0" align="absmiddle" src="/images/2010/article/wmlogo.gif"> 
+<img width="44" height="44" border="0" align="absmiddle" src="/images/2010/article/home_b.gif"> 
+<b><object width="48" height="56" border="0" align="absmiddle" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0">
+<param name="movie" value="http://image.yesky.com/TLimages/index/gangting.swf">
+<param name="quality" value="high">
+<embed width="54" height="62" align="absmiddle" src="http://image.yesky.com/TLimages/index/gangting.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"><param name="wmode" value="opaque"></object></b>
+</dt>
+  <dd><a href="http://www.firnow.com/" target="_blank">飞诺网</a> 鲁ICP备10012328号<br>
+    IT技术从现在起飞</dd><span class="discat"><a href="/list/1060103-055FBDB532A844EB.shtml">Linux技术文章</a></span></dl> 
+<div class="clear"></div>
+</div>
+</div>
+</div>
+<input id="ajaxUrl" type="hidden"  value="/Ajax/Comment.ashx"/>
+<input id="articleID" type="hidden"  value="136066"/>
+<input id="catalogID" type="hidden"  value="1060103"/>
+<div class="ad11"><script language="javascript" src="/ad/2010/article/ad11.js"></script></div>
+<script type="text/javascript" language="javascript" src="/js/2010/Article_bot.js"></script>
+</body>
+</html>

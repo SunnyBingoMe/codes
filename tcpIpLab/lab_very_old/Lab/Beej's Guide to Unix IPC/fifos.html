@@ -1,0 +1,241 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>FIFOs</title>
+<link rel="stylesheet" href="bgipc.css" type="text/css">
+</head>
+
+<body bgcolor="#ffffff">
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="pipes.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><a href="flocking.html">Next&nbsp;&gt;&gt;</a></td>
+</tr></table>
+
+
+<h2 class="sect1title">5. <a name="fifos">FIFOs</a></h2><hr class="mainsecthr"/>
+
+
+<p>A FIFO ("First In, First Out", pronounced "Fy-Foh") is sometimes
+known as a <i>named pipe</i>.  That is, it's like a <a href="pipes.html">pipe</a>, except that it has a name!  In this case, the
+name is that of a file that multiple processes can <b><tt class="func">open()</tt></b>
+and read and write to.</p>
+
+<p>This latter aspect of FIFOs is designed to let them get around one of
+the shortcomings of normal pipes: you can't grab one end of a normal
+pipe that was created by an unrelated process.  See, if I run two
+individual copies of a program, they can both call <b><tt class="func">pipe()</tt></b>
+all they want and still not be able to speak to one another.  (This is
+because you must <b><tt class="func">pipe()</tt></b>, then <b><tt class="func">fork()</tt></b> to get a
+child process that can communicate to the parent via the pipe.)  With
+FIFOs, though, each unrelated process can simply <b><tt class="func">open()</tt></b> the
+pipe and transfer data through it.</p>
+
+
+
+
+<h3 class="sect2title">5.1. <a name="fifonew">A New FIFO is Born</a></h3>
+
+
+<p>Since the FIFO is actually a file on disk, you have to do some
+fancy-schmancy stuff to create it.  It's not that hard.  You just have
+to call <b><tt class="func">mknod()</tt></b> with the proper arguments.  Here is a
+<b><tt class="func">mknod()</tt></b> call that creates a FIFO:</p>
+
+<pre class="code">mknod("myfifo", S_IFIFO | 0644 , 0);</pre>
+
+
+<p>In the above example, the FIFO file will be called
+"<i><tt class="var">myfifo</tt></i>".  The second argument is the creation mode, which
+is used to tell <b><tt class="func">mknod()</tt></b> to make a FIFO (the
+<tt class="const">S_IFIFO</tt> part of the OR) and sets access permissions to
+that file (octal 644, or <tt class="tt">rw-r--r--</tt>) which can also be set by
+ORing together macros from <i><tt class="var">sys/stat.h</tt></i>.  This permission is
+just like the one you'd set using the <b class="com">chmod</b> command.
+Finally, a device number is passed.  This is ignored when creating a
+FIFO, so you can put anything you want in there.</p>
+
+<p>(An aside: a FIFO can also be created from the command line using the
+Unix <b class="com">mknod</b> command.)</p>
+
+
+
+
+
+<h3 class="sect2title">5.2. <a name="fifopc">Producers and Consumers</a></h3>
+
+
+<p>Once the FIFO has been created, a process can start up and open it
+for reading or writing using the standard <b><tt class="func">open()</tt></b> system
+call.</p>
+
+<p>Since the process is easier to understand once you get some code in
+your belly, I'll present here two programs which will send data through
+a FIFO.  One is <i><tt class="var">speak.c</tt></i> which sends data through the FIFO,
+and the other is called <i><tt class="var">tick.c</tt></i>, as it sucks data out of the
+FIFO.</p>
+
+<p>Here is <i><tt class="var"><a href="http://beej.us/guide/bgipc/examples/speak.c" target="_blank">speak.c</a></tt></i>:</p>
+
+<pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+
+#define FIFO_NAME "american_maid"
+
+int main(void)
+{
+    char s[300];
+    int num, fd;
+
+    mknod(FIFO_NAME, S_IFIFO | 0666, 0);
+
+    printf("waiting for readers...\n");
+    fd = open(FIFO_NAME, O_WRONLY);
+    printf("got a reader--type some stuff\n");
+
+    while (gets(s), !feof(stdin)) {
+        if ((num = write(fd, s, strlen(s))) == -1)
+            perror("write");
+        else
+            printf("speak: wrote %d bytes\n", num);
+    }
+
+    return 0;
+}</pre>
+
+
+<p>What <b class="com">speak</b> does is create the FIFO, then try to
+<b><tt class="func">open()</tt></b> it.  Now, what will happen is that the
+<b><tt class="func">open()</tt></b> call will <i>block</i> until some other process
+opens the other end of the pipe for reading.  (There is a way around
+this—see <a href="fifos.html#fifondelay"><tt class="const">O_NDELAY</tt></a>,
+below.)  That process is <i><tt class="var"><a href="http://beej.us/guide/bgipc/examples/tick.c" target="_blank">tick.c</a></tt></i>, shown here:</p>
+
+<pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+
+#define FIFO_NAME "american_maid"
+
+int main(void)
+{
+    char s[300];
+    int num, fd;
+
+    mknod(FIFO_NAME, S_IFIFO | 0666, 0);
+
+    printf("waiting for writers...\n");
+    fd = open(FIFO_NAME, O_RDONLY);
+    printf("got a writer\n");
+
+    do {
+        if ((num = read(fd, s, 300)) == -1)
+            perror("read");
+        else {
+            s[num] = '\0';
+            printf("tick: read %d bytes: \"%s\"\n", num, s);
+        }
+    } while (num &gt; 0);
+
+    return 0;
+}</pre>
+
+
+<p> Like <i><tt class="var">speak.c</tt></i>, <b class="com">tick</b> will block on the
+<b><tt class="func">open()</tt></b> if there is no one writing to the FIFO.  As soon as
+someone opens the FIFO for writing, <b class="com">tick</b> will spring to
+life.</p>
+
+<p>Try it!  Start <b class="com">speak</b> and it will block until you start
+<b class="com">tick</b> in another window.  (Conversely, if you start
+<b class="com">tick</b>, it will block until you start <b class="com">speak</b> in
+another window.)  Type away in the <b class="com">speak</b> window and
+<b class="com">tick</b> will suck it all up.</p>
+
+<p>Now, break out of <b class="com">speak</b>.  Notice what happens: the
+<b><tt class="func">read()</tt></b> in <b class="com">tick</b> returns 0, signifying EOF.  In
+this way, the reader can tell when all writers have closed their
+connection to the FIFO.  "What?" you ask "There can be multiple writers
+to the same pipe?"  Sure!  That can be very useful, you know.  Perhaps
+I'll show you later in the document how this can be exploited.</p>
+
+<p>But for now, lets finish this topic by seeing what happens when you
+break out of <b class="com">tick</b> while <b class="com">speak</b> is running.
+"Broken Pipe"!  What does this mean?  Well, what has happened is that
+when all readers for a FIFO close and the writer is still open, the
+writer will receiver the signal SIGPIPE the next time it tries to
+<b><tt class="func">write()</tt></b>.  The default signal handler for this signal prints
+"Broken Pipe" and exits.  Of course, you can handle this more gracefully
+by catching SIGPIPE through the <b><tt class="func">signal()</tt></b> call.</p>
+
+<p>Finally, what happens if you have multiple readers?  Well, strange
+things happen.  Sometimes one of the readers get everything.  Sometimes
+it alternates between readers.  Why do you want to have multiple
+readers, anyway?</p>
+
+
+
+
+
+<h3 class="sect2title">5.3. <a name="fifondelay"><tt class="const">O_NDELAY</tt>!  I'm UNSTOPPABLE!</a></h3>
+
+
+<p>Earlier, I mentioned that you could get around the blocking
+<b><tt class="func">open()</tt></b> call if there was no corresponding reader or writer.
+The way to do this is to call <b><tt class="func">open()</tt></b> with the
+<tt class="const">O_NDELAY</tt> flag set in the mode argument:</p>
+
+<pre class="code">fd = open(FIFO_NAME, O_RDONLY | <b>O_NDELAY</b>);</pre>
+
+
+<p>This will cause <b><tt class="func">open()</tt></b> to return <tt class="const">-1</tt> if
+there are no processes that have the file open for reading.</p>
+
+<p>Likewise, you can open the reader process using the
+<tt class="const">O_NDELAY</tt> flag, but this has a different effect: all
+attempts to <b><tt class="func">read()</tt></b> from the pipe will simply return
+<tt class="const">0</tt> bytes read if there is no data in the pipe.  (That is,
+the <b><tt class="func">read()</tt></b> will no longer block until there is some data in
+the pipe.)  Note that you can no longer tell if <b><tt class="func">read()</tt></b> is
+returning <tt class="const">0</tt> because there is no data in the pipe, or
+because the writer has exited.  This is the price of power, but my
+suggestion is to try to stick with blocking whenever possible.</p>
+
+
+
+
+
+
+
+<h3 class="sect2title">5.4. <a name="fifoconc">Concluding Notes</a></h3>
+
+
+<p>Having the name of the pipe right there on disk sure makes it easier,
+doesn't it?  Unrelated processes can communicate via pipes!  (This is an
+ability you will find yourself wishing for if you use normal pipes for
+too long.)  Still, though, the functionality of pipes might not be quite
+what you need for your applications.  <a href="mq.html">Message
+queues</a> might be more your speed, if your system supports
+them.</p>
+
+
+
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="pipes.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><a href="flocking.html">Next&nbsp;&gt;&gt;</a></td>
+</tr></table>
+
+</body>
+</html>

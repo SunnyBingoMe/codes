@@ -1,0 +1,23 @@
+
+     7. NAME old-file-spec
+
+         Renames the old-file-spec to be new-file-spec on the remote
+         system.
+
+         Replies:
+
+            +File exists
+
+            -Can't find <old-file-spec>
+
+               NAME command is aborted, don't send TOBE.
+
+         If you receive a '+' you then send:
+
+            TOBE new-file-spec
+
+         The server replies with:
+
+            +<old-file-spec> renamed to <new-file-spec>
+
+            -File wasn't renamed because (reason)

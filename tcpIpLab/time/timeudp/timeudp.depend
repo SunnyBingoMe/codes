@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1288733580 source:/media/now/0_tcpproj/time/timeudp/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<errno.h>
+	<string.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<netdb.h>
+	<time.h>
+
+1289151343 source:/media/now/bisu10_et2440_lab_ipc/time/timeudp/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<errno.h>
+	<string.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<netdb.h>
+	<time.h>
+

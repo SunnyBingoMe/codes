@@ -1,0 +1,156 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>More IPC Resources</title>
+<link rel="stylesheet" href="bgipc.css" type="text/css">
+</head>
+
+<body bgcolor="#ffffff">
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="unixsock.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><font color="#7f7f7f">Next&nbsp;&gt;&gt;</font></td>
+</tr></table>
+
+
+<h2 class="sect1title">12. <a name="references">More IPC Resources</a></h2><hr class="mainsecthr"/>
+
+
+
+
+<h3 class="sect2title">12.1. <a name="refbooks">Books</a></h3>
+
+
+<p>Here are some books that describe some of the procedures I've
+discussed in this guide, as well as Unix details in specific:</p>
+
+
+
+<p><i>Unix Network Programming, volumes 1-2</i> by W.
+Richard Stevens.  Published by Prentice Hall.  ISBNs for volumes 1-2:
+<a href="http://beej.us/guide/url/unixnet1" target="_blank">0131411551</a>,
+<a href="http://beej.us/guide/url/unixnet2" target="_blank">0130810819</a>.
+</p>
+
+
+<p><i>Advanced Programming in the UNIX
+Environment</i> by W. Richard Stevens.  Published by Addison
+Wesley.  ISBN
+<a href="http://beej.us/guide/url/advunix" target="_blank">0201433079</a>.
+</p>
+
+
+<p>Bach, Maurice J.  <i>The Design of the UNIX Operating
+System</i>.  New Jersey: Prentice-Hall, 1986.  ISBN <a href="http://beej.us/guide/url/unixdesign" target="_blank">0132017997</a>.</p>
+
+
+
+
+
+
+
+
+<h3 class="sect2title">12.2. <a name="onlineref">Other online documentation</a></h3>
+
+
+
+
+<p><i><a href="http://www.kohala.com/start/unpv22e/unpv22e.html" target="_blank">UNIX Network Programming Volume
+2 home page</a></i>—includes source code from Stevens'
+superfine book</p>
+
+
+<p><i><a href="http://tldp.org/LDP/lpg/node7.html" target="_blank">The Linux Programmer's
+Guide</a></i>—in-depth section on IPC</p>
+
+
+<p><i><a href="http://www.cs.cf.ac.uk/Dave/C/" target="_blank">UNIX System Calls and
+Subroutines using C</a></i>—contains modest IPC
+information</p>
+
+
+<p><i><a href="http://tldp.org/LDP/tlk/ipc/ipc.html" target="_blank">The Linux
+Kernel</a></i>—how the Linux kernel implements
+IPC</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 class="sect2title">12.3. <a name="manpages">Linux man pages</a></h3>
+
+
+<p>There are Linux manual pages.  If you run another flavor of Unix,
+please look at your own man pages, as these might not work on your
+system.</p>
+
+<p><a href="http://www.linuxmanpages.com/man2/accept.2.php" target="_blank"><b><tt class="func">accept()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/bind.2.php" target="_blank"><b><tt class="func">bind()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/connect.2.php" target="_blank"><b><tt class="func">connect()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/dup.2.php" target="_blank"><b><tt class="func">dup()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/exec.2.php" target="_blank"><b><tt class="func">exec()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/exit.2.php" target="_blank"><b><tt class="func">exit()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/fcntl.2.php" target="_blank"><b><tt class="func">fcntl()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man3/fileno.3.php" target="_blank"><b><tt class="func">fileno()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/fork.2.php" target="_blank"><b><tt class="func">fork()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man3/ftok.3.php" target="_blank"><b><tt class="func">ftok()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/getpagesize.2.php" target="_blank"><b><tt class="func">getpagesize()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man8/ipcrm.8.php" target="_blank"><b class="com">ipcrm</b></a>,
+<a href="http://www.linuxmanpages.com/man8/ipcs.8.php" target="_blank"><b class="com">ipcs</b></a>,
+<a href="http://www.linuxmanpages.com/man1/kill.1.php" target="_blank"><b class="com">kill</b></a>,
+<a href="http://www.linuxmanpages.com/man2/kill.2.php" target="_blank"><b><tt class="func">kill()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/listen.2.php" target="_blank"><b><tt class="func">listen()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/lockf.2.php" target="_blank"><b><tt class="func">lockf()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/lseek.2.php" target="_blank"><b><tt class="func">lseek()</tt></b></a> (for the <i><tt class="var">l_whence</tt></i> field in <nobr><nobr><tt class="type">struct flock</tt></nobr></nobr>),
+<a href="http://www.linuxmanpages.com/man1/mknod.1.php" target="_blank"><b class="com">mknod</b></a>,
+<a href="http://www.linuxmanpages.com/man2/mknod.2.php" target="_blank"><b><tt class="func">mknod()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/mmap.2.php" target="_blank"><b><tt class="func">mmap()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/msgctl.2.php" target="_blank"><b><tt class="func">msgctl()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/msgget.2.php" target="_blank"><b><tt class="func">msgget()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/msgsnd.2.php" target="_blank"><b><tt class="func">msgsnd()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/munmap.2.php" target="_blank"><b><tt class="func">munmap()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/open.2.php" target="_blank"><b><tt class="func">open()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/pipe.2.php" target="_blank"><b><tt class="func">pipe()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man1/ps.1.php" target="_blank"><b class="com">ps</b></a>,
+<a href="http://www.linuxmanpages.com/man3/raise.3.php" target="_blank"><b><tt class="func">raise()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/read.2.php" target="_blank"><b><tt class="func">read()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/recv.2.php" target="_blank"><b><tt class="func">recv()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/semctl.2.php" target="_blank"><b><tt class="func">semctl()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/semget.2.php" target="_blank"><b><tt class="func">semget()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/semop.2.php" target="_blank"><b><tt class="func">semop()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/send.2.php" target="_blank"><b><tt class="func">send()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/shmat.2.php" target="_blank"><b><tt class="func">shmat()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/shmctl.2.php" target="_blank"><b><tt class="func">shmctl()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/shmdt.2.php" target="_blank"><b><tt class="func">shmdt()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/shmget.2.php" target="_blank"><b><tt class="func">shmget()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/sigaction.2.php" target="_blank"><b><tt class="func">sigaction()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/signal.2.php" target="_blank"><b><tt class="func">signal()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man7/signal.7.php" target="_blank">signals</a>,
+<a href="http://www.linuxmanpages.com/man2/sigpending.2.php" target="_blank"><b><tt class="func">sigpending()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/sigprocmask.2.php" target="_blank"><b><tt class="func">sigprocmask()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/sigsetops.2.php" target="_blank">sigsetops</a>,
+<a href="http://www.linuxmanpages.com/man2/sigsuspend.2.php" target="_blank"><b><tt class="func">sigsuspend()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/socket.2.php" target="_blank"><b><tt class="func">socket()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/socketpair.2.php" target="_blank"><b><tt class="func">socketpair()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/stat.2.php" target="_blank"><b><tt class="func">stat()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/wait.2.php" target="_blank"><b><tt class="func">wait()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/waitpid.2.php" target="_blank"><b><tt class="func">waitpid()</tt></b></a>,
+<a href="http://www.linuxmanpages.com/man2/write.2.php" target="_blank"><b><tt class="func">write()</tt></b></a>.</p>
+
+
+
+<table width="100%" border="0" cellspacing="0"cellpadding="0" class="navtable">
+<tr>
+<td align="left"><a href="unixsock.html">&lt;&lt;&nbsp;Prev</a></td>
+<td align="center"><a href="index.html">Beej's Guide to Unix IPC</a></td><td align="right"><font color="#7f7f7f">Next&nbsp;&gt;&gt;</font></td>
+</tr></table>
+
+</body>
+</html>

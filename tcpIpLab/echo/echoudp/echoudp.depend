@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1288902314 source:/media/now/0_tcpproj/echo/echoudp/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<errno.h>
+	<string.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<netdb.h>
+

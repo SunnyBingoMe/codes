@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1288744634 source:/media/now/0_tcpproj/echo/echotcp_cl/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<errno.h>
+	<string.h>
+	<netdb.h>
+	<sys/types.h>
+	<netinet/in.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<time.h>
+
+1289150670 source:/media/now/bisu10_et2440_lab_ipc/echo/echotcp_cl/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<errno.h>
+	<string.h>
+	<netdb.h>
+	<sys/types.h>
+	<netinet/in.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<time.h>
+
