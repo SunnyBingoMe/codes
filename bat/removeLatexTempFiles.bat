@@ -1,0 +1,1 @@
+DEL *.log *.aux *.synctex.gz* *.bbl *.blg 
