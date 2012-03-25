@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<html>
+  <head>
+    <title tal:content="title">
+      place for the page title
+    </title>
+  </head>
+  <body>
+    <h1 tal:content="title">sample title</h1>
+    <ol>
+      <li tal:repeat="item colors">
+        <span tal:content="item/color">color</span>
+      </li>
+    </ol>
+  </body>
+</html>

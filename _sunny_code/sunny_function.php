@@ -90,9 +90,17 @@ function timetostr($time) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////// check something modify something 
+function getDomain() {
+	return $_SERVER['HTTP_HOST'];
+}
+function getRootDomain() {
+	preg_match("/[^\.\/]+\.[^\.\/]+$/", getDomain(), $matches);
+	return $matches[0];
+}
+
 // check email address 
 function isEmailAddress($string){
-	if (! preg_match('/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i', $_POST['email'])) {
+	if (! preg_match('/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i', $string)) {
 		return FALSE;
 	}else {
 		return TRUE;

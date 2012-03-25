@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0053)http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/ -->
+<!-- TOOLBAR_EXEMPT -->
+<HTML lang=en xml:lang="en" 
+xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink = 
+"http://www.w3.org/1999/xlink" xmlns:rddl = "http://www.rddl.org/"><HEAD><TITLE>Web Services Security Policy Language (WS-SecurityPolicy)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<LINK 
+href="../../../../spdefault_files/xrd.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2802" name=GENERATOR></HEAD>
+<BODY>
+<H1>Web Services Security Policy Language (WS-SecurityPolicy)</H1>
+<P>July 2005</P>
+<H2>Introduction</H2>
+<P>This document describes a directory of links to resources related to 
+WS-SecurityPolicy.</P>
+<H2>Schema for WS-SecurityPolicy:</H2><rddl:resource id=WS-SecurityPolicy_Schema 
+xlink:actuate="none" xlink:show="none" xlink:type="simple" 
+xlink:href="ws-securitypolicy.xsd" 
+xlink:arcrole="http://www.rddl.org/purposes#schema-validation" 
+xlink:role="http://www.w3.org/2001/XMLSchema" 
+xlink:title="WS-SecurityPolicy schema document">
+<P><A 
+href="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/ws-securitypolicy.xsd">http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/ws-securitypolicy.xsd</A></P></rddl:resource>
+<H2>Specification:</H2>
+<P><A 
+href="http://specs.xmlsoap.org/ws/2005/07/securitypolicy/ws-securitypolicy.pdf">The 
+WS-SecurityPolicy specification</A> </P>
+<p style="margin-top: 0; margin-bottom: 0"><font color="#005A9C">The WS-SecurityPolicy specification 
+was contributed to the <b>OASIS WS-SX TC </b>in December 2005.</font></p>
+<p style="margin-top: 0; margin-bottom: 0"><span style="font-family: Verdana">&nbsp;&nbsp;
+<font color="#0000FF">&nbsp;</font>Link to the <a style="font-family: Arial; text-decoration: underline; text-underline: single" href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=ws-sx">WS-SX TC website</a></span></p>
+<p style="margin-top: 0; margin-bottom: 0"><span style="font-family: Verdana">
+<font color="#0000FF">&nbsp;&nbsp;&nbsp; </font>
+Link to<font color="#0000FF"> </font>
+<a style="font-family: Arial; text-decoration: underline; text-underline: single" href="http://www.oasis-open.org/committees/download.php/16569/">WS-SecurityPolicy</a></span><font face="Arial"> 
+at OASIS.</font></p>
+
+</BODY></HTML>

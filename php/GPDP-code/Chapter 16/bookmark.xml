@@ -1,0 +1,35 @@
+<bookmark>
+	<field name2="id" accessor2="getId" mutator2="setId">
+		<name>id</name>
+		<accessor>getId</accessor>
+		<mutator>setId</mutator>
+	</field>
+	<field name="url">
+		<name>url</name>
+		<accessor>getUrl</accessor>
+		<mutator>setUrl</mutator>
+	</field>
+	<field>
+		<name>name</name>
+		<accessor>getName</accessor>
+		<mutator>setName</mutator>
+	</field>
+	<field>
+		<name>description</name>
+		<accessor>getDesc</accessor>
+		<mutator>setDesc</mutator>
+	</field>
+	<field>
+		<name>tag</name>
+		<accessor>getGroup</accessor>
+		<mutator>setGroup</mutator>
+	</field>
+	<field>
+		<name>created</name>
+		<mutator>setCrtTime</mutator>
+	</field>
+	<field>
+		<name>updated</name>
+		<mutator>setModTime</mutator>
+	</field>
+</bookmark>
