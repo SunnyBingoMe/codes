@@ -40,4 +40,16 @@ sub rdns()
 	my $name = gethostbyaddr(inet_aton($_[0]), AF_INET) or die "ERR: Cannot resolve ip: $_[0].\n";
 	return $name;
 }
+sub dns()
+{
+	my $server = gethostbyname($_[0]) or die "ERR: gethostbyname()";
+	return $server = inet_ntoa($server);
+}
+
+use POSIX qw/strftime/;
+sub timestampRfc {
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime($_[0]);
+	$year = $year + 1900;
+	return strftime('%Y-%m-%d %H:%M:%S',localtime(time())); 
+}
 
