@@ -1,3 +1,10 @@
 *.tmp
 *.swp
+*.out
+*.o
+unpv1_3e/*
+*.7z
+*.zip
+*.rar
+*.tgz
 

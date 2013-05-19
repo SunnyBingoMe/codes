@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<item value="H:\Dropbox\soccer" key="org.eclipse.dltk.ui.last.external.project"/>
 	<section name="org.zend.php.framework.ui.views.MVCViewPart">
 		<item value="true" key="group_libraries"/>
 		<item value="false" key="linkWithEditor"/>

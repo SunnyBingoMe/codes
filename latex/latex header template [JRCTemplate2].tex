@@ -1,0 +1,268 @@
+%A useful header file for a LaTeX document
+%It is an amalgamation of things I have found useful, done myself or got off the internet.
+%Thanks to everyone who has contributed, and sorry for not crediting you.
+
+%If you have anything else you think should be added, email john.chapman@dur.ac.uk
+
+\title{Your Title}
+
+\author{Your Name}
+
+%\date{}
+\date{\today}
+
+\documentclass[11pt,leqno]{article}
+
+%Reset the margins if you want
+\usepackage[paper=a4paper,dvips,top=2.0cm,left=2.0cm,right=2.0cm,
+    foot=1cm,bottom=2.0cm]{geometry}
+
+%Change font
+%\usepackage{times}
+
+\usepackage{graphicx}
+\usepackage{subfigure}
+
+%fleqn - flush left equations.  Blank for centred
+%\usepackage[fleqn]{amsmath}
+\usepackage[]{amsmath}
+
+%\usepackage{subeqn}
+
+% Various fonts.
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{textcomp}
+
+% Theorems using the AMS style.
+\usepackage{amsthm}
+
+% A package for declaring new mathematical operators
+\usepackage{amsopn}
+%eg \DeclareMathOperator{\SuperSine}{SuperSine}
+
+% The xspace package defines an \xspace macro, which
+% comes in real handy when you define macros that expand
+% to words.
+\usepackage{xspace}
+
+%shows the label names for equations etc
+%\usepackage{showkeys}
+
+%To make footnotes be numbered by page, not through the whole document
+\usepackage{perpage}
+\MakePerPage{footnote}
+%Use symbols not numbers for footnotes
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+%To handle line numbers
+%Use the command \linenumbers at the start of the document
+%\usepackage{lineno} %if you want running line numbers - not good for big documents!!!
+\usepackage[pagewise]{lineno} %if you want each page numbered from one
+%stuff to make line numbering a bit more robust with amsmath commands
+%This is very important to make everything look correct
+\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+  \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+  \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+  \renewenvironment{#1}%
+     {\linenomath\csname old#1\endcsname}%
+     {\csname oldend#1\endcsname\endlinenomath}}%
+\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+  \patchAmsMathEnvironmentForLineno{#1}%
+  \patchAmsMathEnvironmentForLineno{#1*}}%
+\AtBeginDocument{%
+\patchBothAmsMathEnvironmentsForLineno{equation}%
+\patchBothAmsMathEnvironmentsForLineno{align}%
+\patchBothAmsMathEnvironmentsForLineno{flalign}%
+\patchBothAmsMathEnvironmentsForLineno{alignat}%
+\patchBothAmsMathEnvironmentsForLineno{gather}%
+\patchBothAmsMathEnvironmentsForLineno{multline}%
+%\patchBothAmsMathEnvironmentsForLineno{displaymath}%
+}
+
+%This command sets up hyperlinks in your document automatically
+%It must be called last of all packages! (I don't know why)
+\usepackage{hyperref}
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keywords}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,          % color of internal links
+    citecolor=blue,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+% Managing figures and other floating bodies is a daunting task.
+% When there are even a few of them, LaTeX likes to throw these
+% in separate pages, at the end. Here is how you can convince it
+% throw more figures in the text.
+
+% The following command allows any number of figures at the top of the
+% page. If you set the topnumber to 5, then the maximal number of figures
+% at the top of the page is going to be 5.
+\setcounter{topnumber}{20}
+
+% Same, but for figures at the bottom of the page.
+\setcounter{bottomnumber}{20}
+
+% Maximal number of figures in a page.
+\setcounter{totalnumber}{20}
+
+% Minimal amount of text per page (0.01 = 1%)
+\renewcommand{\textfraction}{0.20}
+
+% prohibits pages consisting solely of floats.
+\renewcommand{\floatpagefraction}{0.5}
+
+%Macro so that C++ is never hyphenated
+\newcommand\CC{\Lang{\mbox{C++}}\xspace}
+
+%Similarly for Java and Pascal
+\newcommand\Lang[1]{\textsc{#1}}
+\newcommand\Pascal{\Lang{Pascal}}
+\newcommand\Java{\Lang{Java}}
+
+%Text for keywords in programs
+\newcommand{\keyword}[1]{\texttt{\textbf{#1}}}
+
+%Macro shorthand for \begin{displaymath}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+
+\newcommand{\toinfty}[1]{#1 \rightarrow \infty}
+\newcommand{\tozero}[1]{#1 \rightarrow 0}
+
+%Macros for standard sets
+\newcommand{\newVar}[2]{\newcommand{#1}{\ensuremath{#2}\xspace}}
+\newVar\Naturals{\mathbb{N}}
+\newVar\Integers{\mathbb{Z}}
+\newVar\Rationals{\mathbb{Q}}
+\newVar\Reals{\mathbb{R}}
+\newVar\Complex{\mathbb{C}}
+
+%Macros for math functions
+\newcommand{\ldb}{[\![}
+\newcommand{\rdb}{]\!]}
+\newcommand{\norm}[1]{\ensuremath{\lVert#1\rVert}}
+\newcommand{\abs}[1]{\ensuremath{\lvert#1\rvert}}
+\newcommand{\ceil}[1]{\ensuremath{\lceil#1\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\lfloor#1\rfloor}}
+\newcommand{\set}[1]{\ensuremath{\{#1\}}}
+\newcommand{\angular}[1]{\ensuremath{\langle#1\rangle}}
+\newcommand{\paren}[1]{\ensuremath{(#1)}}
+\newcommand{\sset}[1]{ \{ #1 \} }
+\newcommand{\dset}[2]{ \{ #1 \mid #2 \} }
+\newcommand{\Norm}[1]{\ensuremath{\left\lVert#1\right\rVert}}
+\newcommand{\Abs}[1]{\ensuremath{\left\lvert#1\right\rvert}}
+\newcommand{\Ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\Floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\Set}[1]{\ensuremath{\left\{#1\right\}}}
+\newcommand{\Angular}[1]{\ensuremath{\left\langle#1\right\rangle}}
+\newcommand{\Paren}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\Ssett}[1]{ \{ #1 \} }
+\newcommand{\Dset}[2]{ \{ #1 \mid #2 \} }
+\newcommand{\Average}[1]{\ensuremath{\{ #1 \}} }
+\newcommand{\Jump}[1]{\ensuremath{\ldb #1 \rdb}}
+\newcommand{\average}[1]{\ensuremath{\{ #1 \}} }
+\newcommand{\jump}[1]{\ensuremath{\ldb #1 \rdb}}
+\newcommand{\diam}[1]{\ensuremath{ \mathrm{diam}(#1) }}
+\newcommand\st{\;|\;}
+\newVar\pqTree{{\cal P}}
+\newVar\groups{\mathbf{G}}
+\newVar\lastGroup{\ell}
+\newVar{\currentId}{\ensuremath{\id}\xspace}
+
+% Numbering of theorems is by subsection, e.g., Theorem 1.3.1, etc.
+% This makes it easier for the reader to search for them.
+
+%\newtheorem{theorem}{Theorem}[subsection]
+% \newtheorem{definition}[theorem]{Definition}
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{corollary}[theorem]{Corollary}
+% \newtheorem{fact}[theorem]{Fact}
+% \newtheorem{example}[theorem]{Example}
+
+%\swapnumbers
+%Changes Theorem 1.2 to 1.2 Theorem
+
+%This numbers all items sequentially i.e equation 1.2 followed by Theorem 1.3 followed by Lemma 1.4 etc
+%Also sets up a few new environments
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{definition}[equation]{Definition}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{fact}[equation]{Fact}
+\newtheorem{example}[equation]{Example}
+\newtheorem{hypothesis}[equation]{Hypothesis}
+\newtheorem{assumption}[equation]{Assumption}
+\newtheorem{proposition}[equation]{Proposition}
+
+% If the paper has a large number of equations, figures, tables, etc.,
+% then they should be numbered within sections. Comment out
+% if this is not what you want.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+% The algorithmic package is incredibly powerful in printing algorithms.
+% The noend option eliminates the end-if, end-for etc. to save valuable
+% space.
+%\usepackage[noend]{algorithmic}
+
+% The algorithm package defines the algorithm floating body, which
+% can be used like figures and tables. The plain option makes algorithm
+% have the same layout as figures. The default option puts the caption
+% on the top, bounded between two rules.
+%\usepackage[plain]{algorithm}
+
+% Next we customize the algorithm environment
+% to print comments in a C++ like style and using
+% an italic font.
+%\renewcommand\algorithmiccomment[1]{// \textit{#1}}
+% Another customization is the capitalization of
+% of commands
+%\renewcommand\algorithmicif{\textbf{If}}
+%\renewcommand\algorithmicfor{\textbf{For}}
+%\renewcommand\algorithmicforall{\textbf{For all}}
+%\renewcommand\algorithmicwhile{\textbf{While}}
+
+%Use some script greek letters
+\renewcommand\epsilon{\varepsilon}
+\renewcommand\phi{\varphi}
+\renewcommand\theta{\vartheta}
+
+%To show comments in the margin - comment out for final version
+%\usepackage{showkeys}
+
+%Change lists to roman numerals
+\renewcommand{\labelenumi}{(\Roman{enumi})}
+\renewcommand{\labelenumii}{(\roman{enumi})}
+
+
+%-----------------------------------------------------------------------------------------------%
+%Document specific commands
+
+%-----------------------------------------------------------------------------------------------%
+
+
+\begin{document}
+
+\maketitle
+
+\linenumbers
+
+\end{document}
